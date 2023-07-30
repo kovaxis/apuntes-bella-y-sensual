@@ -1,6 +1,3 @@
-
-#include "../common.h"
-
 // compute substring hashes in O(1).
 // hashes are compatible between different strings.
 struct Hash {
@@ -11,7 +8,7 @@ struct Hash {
 
     Hash() {}
     // O(N)
-    Hash(const string& s, ll HMOD_ = 1000003931)
+    Hash(const string &s, ll HMOD_ = 1000003931)
         : N(s.size() + 1), HMOD(HMOD_), p(N), h(N) {
         static const ll P =
             chrono::steady_clock::now().time_since_epoch().count() % (1 << 29);
@@ -25,7 +22,7 @@ struct Hash {
 
     bool cmp(pair<ll, int> x0, pair<ll, int> x1) {
         int d = x0.second - x1.second;
-        ll& lo = d < 0 ? x0.first : x1.first;
+        ll &lo = d < 0 ? x0.first : x1.first;
         lo = lo * p[abs(d)] % HMOD;
         return x0.first == x1.first;
     }
@@ -39,7 +36,7 @@ struct HashM {
 
     HashM() {}
     // O(K N)
-    HashM(const string& s, const vector<ll>& mods) : N(mods.size()), sub(N) {
+    HashM(const string &s, const vector<ll> &mods) : N(mods.size()), sub(N) {
         rep(i, N) sub[i] = Hash(s, mods[i]);
     }
 
@@ -50,7 +47,7 @@ struct HashM {
         return hs;
     }
 
-    bool cmp(const vector<pair<ll, int>>& x0, const vector<pair<ll, int>>& x1) {
+    bool cmp(const vector<pair<ll, int>> &x0, const vector<pair<ll, int>> &x1) {
         rep(i, N) if (!sub[i].cmp(x0[i], x1[i])) return false;
         return true;
     }

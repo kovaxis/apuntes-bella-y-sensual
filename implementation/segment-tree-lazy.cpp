@@ -1,5 +1,3 @@
-#include "../common.h"
-
 // 0-based, inclusive-exclusive
 // usage:
 // Stl3<ll> a;

@@ -1,5 +1,3 @@
-#include "../common.h"
-
 template <class T>
 struct Node {
     T x, lz;

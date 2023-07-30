@@ -1,8 +1,4 @@
-#include "../common.h"
-
-struct Query {
-    int l, r, idx;
-};
+struct Query { int l, r, idx; };
 
 // answer segment queries using only `add(i)`, `remove(i)` and `get()`
 // functions.

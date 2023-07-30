@@ -1,5 +1,3 @@
-#include "../common.h"
-
 // hackproof rng
 static mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
@@ -30,37 +28,3 @@ using umap = unordered_map<T, U, Hash>;
 // hackproof unordered_set
 template <class T>
 using uset = unordered_set<T, Hash>;
-
-// an unordered map with small integer keys that avoids hashing, but allows O(N)
-// iteration and clearing, with N being the amount of items (not the maximum
-// key).
-template <class T>
-struct Map {
-    int N;
-    vector<bool> used;
-    vector<int> keys;
-    vector<T> vals;
-
-    Map() : N(0) {}
-    // O(C)
-    void recap(int C) {
-        C += 1, used.resize(C), keys.resize(C), vals.resize(C);
-    }
-
-    // O(1)
-    T &operator[](int k) {
-        if (!used[k]) used[k] = true, keys[N++] = k, vals[k] = T();
-        return vals[k];
-    }
-
-    // O(N)
-    void clear() {
-        while (N) used[keys[--N]] = false;
-    }
-
-    // O(N)
-    template <class OP>
-    void iterate(OP op) {
-        rep(i, N) op(keys[i], vals[keys[i]]);
-    }
-};

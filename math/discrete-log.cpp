@@ -1,7 +1,3 @@
-#include "../common.h"
-#include "../implementation/unordered_map.cpp"
-#include "mod.cpp"
-
 // discrete logarithm log_a(b).
 // solve b ^ x = a (mod M) for the smallest x.
 // returns -1 if no solution is found.

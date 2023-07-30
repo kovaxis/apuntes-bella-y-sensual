@@ -1,5 +1,3 @@
-#include "../common.h"
-
 const double EPS = 1e-9;
 
 // solve a system of equations.

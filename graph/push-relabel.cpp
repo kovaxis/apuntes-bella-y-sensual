@@ -67,8 +67,6 @@ struct PushRelabel {
             }
         }
 
-        ll f = 0;
-        rep(i, N) f += flow[i][t];
-        return f;
+        ll f = 0; rep(i, N) f += flow[i][t]; return f;
     }
 };

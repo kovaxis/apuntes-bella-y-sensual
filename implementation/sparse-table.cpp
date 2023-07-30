@@ -1,5 +1,3 @@
-#include "../common.h"
-
 // handle immutable range maximum queries (or any idempotent query) in O(1)
 template <class T>
 struct Sparse {
