@@ -32,3 +32,7 @@ void compute_automaton(string s) {
         }
     }
 }
+
+// k = n - pi[n - 1]
+// if k divides n, then the string can be aprtitioned into blocks of length k
+// otherwise there is no effective compression and the answer is n.
