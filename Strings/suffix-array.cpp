@@ -1,8 +1,5 @@
-#include<bits/stdc++.h>
-using namespace std;
-#define LOG2(X) ((unsigned) (8*sizeof (unsigned long long) - __builtin_clzll((X)) - 1))
-#define rep(i, n) for (int i = 0; i < (int)n; i++)
-#define repx(i, a, b) for (int i = (int)a; i < (int)b; i++)
+
+#include "../common.h"
 
 struct SuffixArray {
     int n; vector<int> C, R, R_, sa, sa_, lcp;
