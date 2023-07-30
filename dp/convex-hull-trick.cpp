@@ -1,7 +1,3 @@
-#include "../common.h"
-
-const ll INF = LLONG_MAX;
-
 struct Line {
     mutable ll a, b, c;
 
@@ -11,7 +7,6 @@ struct Line {
 
 // dynamically insert `a*x + b` lines and query for maximum at any x
 // all operations have complexity O(log N)
-// UNTESTED
 struct LineContainer : multiset<Line, less<>> {
 
     ll div(ll a, ll b) {

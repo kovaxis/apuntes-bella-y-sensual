@@ -1,5 +1,3 @@
-#include "../common.h"
-
 struct Hld {
     vector<int> P, H, D, pos, top;
 
@@ -8,14 +6,11 @@ struct Hld {
         int N = G.size();
         P.resize(N), H.resize(N), D.resize(N), pos.resize(N),
             top.resize(N);
-        D[0] = -1, dfs(G, 0);
-        int t = 0;
+        D[0] = -1, dfs(G, 0); int t = 0;
         rep(i, N) if (H[P[i]] != i) {
             int j = i;
-            while (j != -1) {
-                top[j] = i, pos[j] = t++;
-                j = H[j];
-            }
+            while (j != -1)
+                { top[j] = i, pos[j] = t++; j = H[j]; }
         }
     }
 
@@ -24,10 +19,8 @@ struct Hld {
         D[i] = D[P[i]] + 1, H[i] = -1;
         for (int c : G[i]) {
             if (c == P[i]) continue;
-            P[c] = i;
-            int sw = dfs(G, c);
+            P[c] = i; int sw = dfs(G, c); w += sw;
             if (sw > mw) H[i] = c, mw = sw;
-            w += sw;
         }
         return w;
     }
@@ -36,8 +29,7 @@ struct Hld {
     void path(int u, int v, OP op) {
         while (top[u] != top[v]) {
             if (D[top[u]] > D[top[v]]) swap(u, v);
-            op(pos[top[v]], pos[v] + 1);
-            v = P[top[v]];
+            op(pos[top[v]], pos[v] + 1); v = P[top[v]];
         }
         if (D[u] > D[v]) swap(u, v);
         op(pos[u], pos[v] + 1); // value on vertex

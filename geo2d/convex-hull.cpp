@@ -1,5 +1,3 @@
-#include "point.cpp"
-
 // get the convex hull with the least amount of vertices for the given set
 // of points
 // probably misbehaves if points are not all distinct!

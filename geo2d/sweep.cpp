@@ -20,11 +20,7 @@ void all_pair_points(vector<P> &ps, OP op) {
     stable_sort(ss.begin(), ss.end(), [&](auto a, auto b) {
         return (ps[a.second] - ps[a.first]).angle_lt(ps[b.second] - ps[b.first]);
     });
-    vector<int> p(N);
-    rep(i, N) p[i] = i;
-    for (auto [i, j] : ss) {
-        op(p[i], p[j]);
-        swap(ps[p[i]], ps[p[j]]);
-        swap(p[i], p[j]);
-    }
+    vector<int> p(N); rep(i, N) p[i] = i;
+    for (auto [i, j] : ss)
+        { op(p[i], p[j]); swap(ps[p[i]], ps[p[j]]); swap(p[i], p[j]); }
 }

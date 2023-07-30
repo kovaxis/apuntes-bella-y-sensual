@@ -1,11 +1,5 @@
-#include "../common.h"
-
-typedef ll T;
-const T EPS = 0;
-
 struct P {
     T x, y;
-
     P(T x, T y) : x(x), y(y) {}
     P() : P(0, 0) {}
 

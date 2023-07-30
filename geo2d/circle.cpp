@@ -1,16 +1,11 @@
-#include "line.cpp"
-#include "point.cpp"
-
 struct C {
-    P o;
-    T r;
+    P o; T r;
 
     C(P o, T r) : o(o), r(r) {}
     C() : C(P(), T()) {}
 
     // intersects the circle with a line, assuming they intersect
-    // the intersections are sorted with respect to the direction of the
-    // line
+    // results are sorted with respect to the direction of the line
     pair<P, P> line_inter(L l) const {
         P c = l.closest_to(o);
         T c2 = (c - o).magsq();
@@ -22,7 +17,6 @@ struct C {
     // negative: 2 intersections
     // zero: 1 intersection
     // positive: 0 intersections
-    // UNTESTED but very simple
     T line_collide(L l) const {
         T c2 = (l.closest_to(o) - o).magsq();
         return c2 - r * r;
@@ -30,7 +24,6 @@ struct C {
 
     // calculates the two intersections between two circles
     // the circles must intersect in one or two points!
-    // REALLY UNTESTED
     pair<P, P> inter(C h) const {
         P d = h.o - o;
         T c = (r * r - h.r * h.r) / d.magsq();

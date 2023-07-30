@@ -1,8 +1,3 @@
-#include "line.cpp"
-#include "point.cpp"
-
-const T INF = 1e9;
-
 // obtain the convex polygon that results from intersecting the given list
 // of halfplanes, represented as lines that allow their left side
 // assumes the halfplane intersection is bounded
@@ -11,8 +6,7 @@ vector<P> halfplane_intersect(vector<L> &H) {
     rep(k, 4) H.push_back(bb), bb.o = bb.o.rot(), bb.d = bb.d.rot();
 
     sort(begin(H), end(H), [](L a, L b) { return a.d.angcmp(b.d) < 0; });
-    deque<L> q;
-    int n = 0;
+    deque<L> q; int n = 0;
     rep(i, H.size()) {
         while (n >= 2 && H[i].side(q[n - 1].intersection(q[n - 2])) > 0)
             q.pop_back(), n--;

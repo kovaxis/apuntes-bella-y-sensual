@@ -1,20 +1,15 @@
-#include "point.cpp"
-
 // a segment or an infinite line
 // does not handle point segments correctly!
 struct L {
     P o, d;
-
     L() : o(), d() {}
     L(P o, P d) : o(o), d(d) {}
 
-    // UNTESTED
     L(P ab, T c) : d(ab.rot()), o(ab * -c / ab.magsq()) {}
     pair<P, T> line_eq() { return {-d.rot(), d.rot() * o}; }
 
     // returns a number indicating which side of the line the point is in
-    // negative: left
-    // positive: right
+    // negative: left, positive: right
     T side(P r) const { return (r - o) / d; }
 
     // returns the intersection coefficient
@@ -73,7 +68,6 @@ struct L {
 
     // get the point in this line that is closest to a given point
     P closest_to(P r) const {
-        P dr = d.rot();
-        return r + (o - r) * dr * dr / d.magsq();
+        P dr = d.rot(); return r + (o - r) * dr * dr / d.magsq();
     }
 };
