@@ -1,0 +1,187 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define LOG2(X) ((unsigned) (8*sizeof (unsigned long long) - __builtin_clzll((X)) - 1))
+#define rep(i, n) for (int i = 0; i < (int)n; i++)
+#define repx(i, a, b) for (int i = (int)a; i < (int)b; i++)
+
+struct SuffixArray {
+    int n; vector<int> C, R, R_, sa, sa_, lcp;
+    inline int gr(int i) { return i < n ? R[i] : 0; } // sort suffixes
+    //inline int gr(int i) { return R[i%n]; }         // sort cyclic shifts
+    void csort(int maxv, int k) {
+        C.assign(maxv + 1, 0); rep(i, n) C[gr(i + k)]++;
+        repx(i, 1, maxv + 1) C[i] += C[i - 1];
+        for (int i = n - 1; i >= 0; i--) sa_[--C[gr(sa[i] + k)]] = sa[i];
+        sa.swap(sa_);
+    }
+    void getSA(vector<int>& s) {
+        R = R_ = sa = sa_ = vector<int>(n); rep(i, n) sa[i] = i;
+        sort(sa.begin(), sa.end(), [&s](int i, int j) { return s[i] < s[j]; });
+        int r = R[sa[0]] = 1;
+        repx(i, 1, n) R[sa[i]] = (s[sa[i]] != s[sa[i - 1]]) ? ++r : r;
+        for (int h = 1; h < n && r < n; h <<= 1) {
+            csort(r, h); csort(r, 0); r = R_[sa[0]] = 1;
+            repx(i, 1, n) {
+                if (R[sa[i]] != R[sa[i - 1]] || gr(sa[i] + h) != gr(sa[i - 1] + h)) r++;
+                R_[sa[i]] = r;
+            } R.swap(R_);
+        }
+    }
+    void getLCP(vector<int> &s) {// only works with suffixes (not cyclic shifts)
+        lcp.assign(n, 0); int k = 0;
+        rep(i, n) {
+            int r = R[i] - 1;
+            if (r == n - 1) { k = 0; continue; }
+            int j = sa[r + 1];
+            while (i + k < n && j + k < n && s[i + k] == s[j + k]) k++;
+            lcp[r] = k; if (k) k--;
+        }
+    }
+    SuffixArray(vector<int> &s) { n = s.size(); getSA(s); getLCP(s); constructLCP(); }
+
+    /* ------ Optional ------ */
+    vector<vector<int>> T;
+    void constructLCP() {
+        T.assign(LOG2(n)+1, lcp);
+        for(int k = 1; (1<<k) <= n; ++k)
+            for(int i = 0; i + (1<<k) <= n; ++i)
+                T[k][i] = min(T[k-1][i],T[k-1][i+(1<<(k-1))]);
+    }
+    // get LCP of suffix starting at i and suffix starting at j
+    int queryLCP(int i, int j) { 
+        if(i == j) return n-i;
+        i = R[i]-1; j = R[j]-1;
+        if(i > j) swap(i, j);
+        ll k = LOG2(j-i);
+        return min(T[k][i],T[k][j-(1<<k)]);
+    }
+    // compare substring of length len1 starting at i
+    // with substring of length len2 starting at j
+    bool cmp(int i, int len1, int j, int len2) {
+        if(queryLCP(i, j) >= min(len1, len2)) 
+            return (len1 < len2);
+        else
+            return (R[i] < R[j]);
+    }
+};
+
+vector<int> suffix_array;
+vector<vector<int>> C;
+int n;
+
+void sort_cyclic_shifts(string s) {
+    s += "$";
+    n = s.size();
+    const int alphabet = 256;
+    vector<int> p(n), c(n), cnt(max(alphabet, n), 0);
+    for (int i = 0; i < n; i++)
+        cnt[s[i]]++;
+    for (int i = 1; i < alphabet; i++)
+        cnt[i] += cnt[i-1];
+    for (int i = 0; i < n; i++)
+        p[--cnt[s[i]]] = i;
+    c[p[0]] = 0;
+    int classes = 1;
+    for (int i = 1; i < n; i++) {
+        if (s[p[i]] != s[p[i-1]])
+            classes++;
+        c[p[i]] = classes - 1;
+    }
+    C.emplace_back(c.begin(), c.end());
+    vector<int> pn(n), cn(n);
+    for (int h = 0; (1 << h) < n; ++h) {
+        for (int i = 0; i < n; i++) {
+            pn[i] = p[i] - (1 << h);
+            if (pn[i] < 0)
+                pn[i] += n;
+        }
+        fill(cnt.begin(), cnt.begin() + classes, 0);
+        for (int i = 0; i < n; i++)
+            cnt[c[pn[i]]]++;
+        for (int i = 1; i < classes; i++)
+            cnt[i] += cnt[i-1];
+        for (int i = n-1; i >= 0; i--)
+            p[--cnt[c[pn[i]]]] = pn[i];
+        cn[p[0]] = 0;
+        classes = 1;
+        for (int i = 1; i < n; i++) {
+            pair<int, int> cur = {c[p[i]], c[(p[i] + (1 << h)) % n]};
+            pair<int, int> prev = {c[p[i-1]], c[(p[i-1] + (1 << h)) % n]};
+            if (cur != prev)
+                ++classes;
+            cn[p[i]] = classes - 1;
+        }
+        c.swap(cn);
+        C.emplace_back(c.begin(), c.end());
+    }
+    p.erase(p.begin());
+    suffix_array = p;
+}
+
+vector<int> lcp_construction(string &s, vector<int> &p) {
+    int n = s.size();
+    vector<int> rank(n);
+    rep(i, n) rank[p[i]] = i;
+
+    int k = 0;
+    vector<int> lcp(n-1, 0);
+    rep(i, n) {
+        if (rank[i] == n - 1) {
+            k = 0;
+            continue;
+        }
+        int j = p[rank[i] + 1];
+        while (i + k < n && j + k < n && s[i+k] == s[j+k])
+            k++;
+        lcp[rank[i]] = k;
+        if (k)
+            k--;
+    }
+    return lcp;
+}
+
+bool compare1(int i, int j, int l) {
+    int k = LOG2(l);
+    pair<int, int> a = {C[k][i], C[k][(i+l-(1 << k))%n]};
+    pair<int, int> b = {C[k][j], C[k][(j+l-(1 << k))%n]};
+    return a >= b;
+}
+
+bool compare2(int i, int j, int l) {
+    int k = LOG2(l);
+    pair<int, int> a = {C[k][i], C[k][(i+l-(1 << k))%n]};
+    pair<int, int> b = {C[k][j], C[k][(j+l-(1 << k))%n]};
+    return a <= b;
+}
+
+
+pair<int,int> find(int i, int len)
+{
+    int l = 0, r = suffix_array.size()-1;
+    while(l != r)
+    {
+        int mid = (l+r)/2;
+        if(compare1(suffix_array[mid], i, len))
+            r = mid;
+        else
+            l = mid+1;
+    }
+    int left = l;
+
+    l = 0, r = suffix_array.size()-1;
+    while(l != r)
+    {
+        int mid = (l+r+1)/2;
+        if(compare2(suffix_array[mid], i, len))
+            l = mid;
+        else
+            r = mid-1;
+    }
+    int right = l;
+
+    if(!compare1(suffix_array[left], i, len)) return {-1,-1};
+    if(!compare2(suffix_array[right], i, len)) return {-1,-1};
+    if(left > right) return {-1,-1};
+
+    return {left, right};
+}
