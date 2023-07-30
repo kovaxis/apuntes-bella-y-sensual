@@ -1,12 +1,8 @@
-#include "../Template.cpp"
-
-struct Node
-{
+struct Node {
     ll s, mx1, mx2, mxc, mn1, mn2, mnc, lz = 0;
     Node() : s(0), mx1(LLONG_MIN), mx2(LLONG_MIN), mxc(0), mn1(LLONG_MAX), mn2(LLONG_MAX), mnc(0) {}
     Node(ll x) : s(x), mx1(x), mx2(LLONG_MIN), mxc(1), mn1(x), mn2(LLONG_MAX), mnc(1) {}
-    Node(const Node &a, const Node &b)
-    {
+    Node(const Node &a, const Node &b) {
         // add
         s = a.s + b.s;
         // min
@@ -22,26 +18,25 @@ struct Node
 
 // 0 - indexed / inclusive - inclusive
 template <class node>
-struct STB
-{
+struct STB {
     vector<node> st; int n;
 
-    void build(int u, int i, int j, vector<node> &arr)
-    {
-        if (i == j) { st[u] = arr[i]; return; }
+    void build(int u, int i, int j, vector<node> &arr) {
+        if (i == j) {
+            st[u] = arr[i];
+            return;
+        }
         int m = (i + j) / 2, l = u * 2 + 1, r = u * 2 + 2;
         build(l, i, m, arr), build(r, m + 1, j, arr);
         st[u] = node(st[l], st[r]);
     }
-    void push_add(int u, int i, int j, ll v)
-    {
+    void push_add(int u, int i, int j, ll v) {
         st[u].s += (j - i + 1) * v;
         st[u].mx1 += v, st[u].mn1 += v, st[u].lz += v;
         if (st[u].mx2 != LLONG_MIN) st[u].mx2 += v;
         if (st[u].mn2 != LLONG_MAX) st[u].mn2 += v;
     }
-    void push_max(int u, ll v, bool l) // for min op
-    {
+    void push_max(int u, ll v, bool l) { // for min op
         if (v >= st[u].mx1) return;
         st[u].s -= st[u].mx1 * st[u].mxc;
         st[u].mx1 = v;
@@ -50,8 +45,7 @@ struct STB
         else if (v <= st[u].mn1) st[u].mn1 = v;
         else if (v < st[u].mn2) st[u].mn2 = v;
     }
-    void push_min(int u, ll v, bool l) // for max op
-    {
+    void push_min(int u, ll v, bool l) { // for max op
         if (v <= st[u].mn1) return;
         st[u].s -= st[u].mn1 * st[u].mnc;
         st[u].mn1 = v;
@@ -60,8 +54,7 @@ struct STB
         else if (v >= st[u].mx1) st[u].mx1 = v;
         else if (v > st[u].mx2) st[u].mx2 = v;
     }
-    void push(int u, int i, int j)
-    {
+    void push(int u, int i, int j) {
         if (i == j) return;
         // add
         int m = (i + j) / 2, l = u * 2 + 1, r = u * 2 + 2;
@@ -75,39 +68,47 @@ struct STB
         push_min(l, st[u].mn1, i == m);
         push_min(r, st[u].mn1, m + 1 == r);
     }
-    node query(int a, int b, int u, int i, int j)
-    {
+    node query(int a, int b, int u, int i, int j) {
         if (b < i || j < a) return node();
         if (a <= i && j <= b) return st[u];
         push(u, i, j);
         int m = (i + j) / 2, l = u * 2 + 1, r = u * 2 + 2;
         return node(query(a, b, l, i, m), query(a, b, r, m + 1, j));
     }
-    void update_add(int a, int b, ll v, int u, int i, int j)
-    {
+    void update_add(int a, int b, ll v, int u, int i, int j) {
         if (b < i || j < a) return;
-        if (a <= i && j <= b) { push_add(u, i, j, v); return; }
+        if (a <= i && j <= b) {
+            push_add(u, i, j, v);
+            return;
+        }
         push(u, i, j);
         int m = (i + j) / 2, l = u * 2 + 1, r = u * 2 + 2;
-        update_add(a, b, v, l, i, m); update_add(a, b, v, r, m + 1, j);
+        update_add(a, b, v, l, i, m);
+        update_add(a, b, v, r, m + 1, j);
         st[u] = node(st[l], st[r]);
     }
-    void update_min(int a, int b, ll v, int u, int i, int j)
-    {
+    void update_min(int a, int b, ll v, int u, int i, int j) {
         if (b < i || j < a || v >= st[u].mx1) return;
-        if (a <= i && j <= b && v > st[u].mx2) { push_max(u, v, i == j); return; }
+        if (a <= i && j <= b && v > st[u].mx2) {
+            push_max(u, v, i == j);
+            return;
+        }
         push(u, i, j);
         int m = (i + j) / 2, l = u * 2 + 1, r = u * 2 + 2;
-        update_min(a, b, v, l, i, m); update_min(a, b, v, r, m + 1, j);
+        update_min(a, b, v, l, i, m);
+        update_min(a, b, v, r, m + 1, j);
         st[u] = node(st[l], st[r]);
     }
-    void update_max(int a, int b, ll v, int u, int i, int j)
-    {
+    void update_max(int a, int b, ll v, int u, int i, int j) {
         if (b < i || j < a || v <= st[u].mn1) return;
-        if (a <= i && j <= b && v < st[u].mn2) { push_min(u, v, i == j); return; }
+        if (a <= i && j <= b && v < st[u].mn2) {
+            push_min(u, v, i == j);
+            return;
+        }
         push(u, i, j);
         int m = (i + j) / 2, l = u * 2 + 1, r = u * 2 + 2;
-        update_max(a, b, v, l, i, m); update_max(a, b, v, r, m + 1, j);
+        update_max(a, b, v, l, i, m);
+        update_max(a, b, v, r, m + 1, j);
         st[u] = node(st[l], st[r]);
     }
 
