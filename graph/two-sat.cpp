@@ -1,6 +1,3 @@
-#include "../common.h"
-#include "strongly_connected_components.cpp"
-
 // calculate the solvability of a system of logical equations, where every equation is of the form `a or b`.
 //  `neg`: get negation of `u`
 //  `then`: `u` implies `v`
@@ -10,11 +7,8 @@
 // after `solve` (O(V+E)) returns true, `sol` contains one possible solution.
 // determining all solutions is O(V*E) hard (requires computing reachability in a DAG).
 struct TwoSat {
-    int N;
-    vector<vector<int>> G;
-    Scc scc;
-    vector<bool> sol;
-
+    int N; vector<vector<int>> G;
+    Scc scc; vector<bool> sol;
     TwoSat(int n) : N(n), G(2 * n), sol(n) {}
     TwoSat() {}
 

@@ -1,7 +1,3 @@
-
-#define NOMAIN_BIGINT
-#include "mod.cpp"
-
 pair<ll, ll> solve_crt(const vector<pair<ll, ll>> &eqs) {
     ll a0 = eqs[0].first, p0 = eqs[0].second;
     repx(i, 1, eqs.size()) {

@@ -1,5 +1,3 @@
-#include "../common.h"
-
 // get a maximum cardinality matching in a bipartite graph.
 // input: adjacency lists.
 // output: matching (in `mt` member).

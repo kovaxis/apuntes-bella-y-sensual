@@ -1,5 +1,3 @@
-#include "../common.h"
-
 ll binexp(ll a, ll e, ll M) {
     assert(e >= 0);
     ll res = 1 % M;
@@ -48,13 +46,11 @@ ll bigmul(ll x, ll y, ll M) {
     return z;
 }
 
-
 // all modular inverses from 1 to inv.size()-1
-void modular_inverse(vector<ll> &inv)
-{
+void multinv_all(vector<ll> &inv) {
     inv[1] = 1;
     repx(i, 2, inv.size())
-        inv[i] = MOD - (MOD/i) * inv[MOD%i] % MOD;
+        inv[i] = MOD - (MOD / i) * inv[MOD % i] % MOD;
 }
 
 struct Mod {

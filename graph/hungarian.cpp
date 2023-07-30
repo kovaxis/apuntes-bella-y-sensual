@@ -1,7 +1,3 @@
-#include "../common.h"
-
-const ll INF = 1e18;
-
 // find a maximum gain perfect matching in the given bipartite complete graph.
 // input: gain matrix (G_{xy} = benefit of joining vertex x in set X with vertex
 // y in set Y).
@@ -23,9 +19,7 @@ struct Hungarian {
 
     void augment(int x, int y) {
         while (x != -2) {
-            yx[y] = x;
-            swap(xy[x], y);
-            x = p[x];
+            yx[y] = x; swap(xy[x], y); x = p[x];
         }
     }
 
@@ -62,14 +56,8 @@ struct Hungarian {
     }
 
     Hungarian(vector<vector<ll>> g)
-        : N(g.size()),
-          gain(g),
-          xy(N, -1),
-          yx(N, -1),
-          lx(N, -INF),
-          ly(N),
-          slack(N),
-          slackx(N) {
+        : N(g.size()), gain(g), xy(N, -1), yx(N, -1), lx(N, -INF),
+        ly(N), slack(N), slackx(N) {
         rep(x, N) rep(y, N) lx[x] = max(lx[x], ly[y]);
         rep(i, N) improve();
     }

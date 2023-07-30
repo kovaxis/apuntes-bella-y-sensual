@@ -1,5 +1,3 @@
-#include "../common.h"
-
 // compute strongly connected components.
 // time: O(V + E), memory: O(V)
 //

@@ -1,5 +1,3 @@
-#include "../common.h"
-
 // counts the divisors of a positive integer in O(sqrt(n))
 ll count_divisors(ll x) {
     ll divs = 1, i = 2;

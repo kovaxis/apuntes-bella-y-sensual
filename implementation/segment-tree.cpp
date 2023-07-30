@@ -1,5 +1,3 @@
-#include "../common.h"
-
 // usage:
 // St<Node<ll>> st;
 // st = {N};

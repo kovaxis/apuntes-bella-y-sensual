@@ -1,5 +1,3 @@
-#include "../common.h"
-
 struct Dsu {
     vector<int> p, r;
 

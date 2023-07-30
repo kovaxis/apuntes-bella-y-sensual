@@ -1,7 +1,4 @@
-#include "../common.h"
-
 using T = ll;
-
 struct Mat {
     int N, M;
     vector<vector<T>> v;

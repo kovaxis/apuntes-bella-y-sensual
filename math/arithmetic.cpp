@@ -1,5 +1,3 @@
-#include "../common.h"
-
 // floor(log2(n)) without precision loss
 inline int floor_log2(int n) { return n <= 1 ? 0 : 31 - __builtin_clz(n); }
 // ceil(log2(n)) without precision loss

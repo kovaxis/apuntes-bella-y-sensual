@@ -1,9 +1,3 @@
-
-#include "../common.h"
-
-#define NOMAIN_MOD
-#include "mod.cpp"
-
 using cd = complex<double>;
 const double PI = acos(-1);
 
@@ -237,45 +231,4 @@ struct Poly {
         subeval(tree, x, y, 1, 0, N - 1);
         return y;
     }
-
-    friend ostream &operator<<(ostream &s, const Poly &p) {
-        s << "(";
-        bool first = true;
-        rep(i, p.a.size()) {
-            if (p.a[i] == 0) continue;
-            if (!first) s << " + ";
-            s << p.a[i];
-            if (i > 0) s << " x";
-            if (i > 1) s << "^" << i;
-            first = false;
-        }
-        s << ")";
-        return s;
-    }
 };
-
-#ifndef NOMAIN_POLY
-
-int main() {
-    Poly p1({1, 4});
-    Poly p2({-3, 2});
-    Poly p3({12, 12, 12, 1});
-    Poly p4({128, 40, 29, 2, 0});
-
-    cout << p1 << " * " << p2 << " = " << p1 * p2 << endl;
-
-    vector<ll> xs = {-4, -3, -2, -1, 0, 1, 2, 3, 4};
-    for (ll &x : xs) x = (x % MOD + MOD) % MOD;
-    vector<ll> ys = p2.multieval(xs);
-    cout << "P(x) = " << p2 << endl;
-    cout << "x -> P(x):" << endl;
-    rep(i, xs.size()) { cout << "  " << xs[i] << " -> " << ys[i] << endl; }
-
-    cerr << endl;
-    find_root_of_unity(7340033);
-
-    cerr << endl;
-    find_root_of_unity(998244353);
-}
-
-#endif
