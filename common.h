@@ -1,3 +1,6 @@
+#pragma GCC optimize("Ofast")
+#pragma GCC target("bmi,bmi2,lzcnt,popcnt")
+#pragma GCC target("avx,avx2,f16c,fma,sse3,ssse3,sse4.1,sse4.2")
 #include <bits/stdc++.h>
 using namespace std;
 
