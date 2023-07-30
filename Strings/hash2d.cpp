@@ -79,10 +79,4 @@ struct Hash2dM {
     }
 };
 
-#ifndef NOMAIN_HASH2D
-
 const vector<ll> HMOD = {1000002649, 1000000933, 1000003787, 1000002173};
-
-int main() {}
-
-#endif
