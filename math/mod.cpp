@@ -49,11 +49,11 @@ ll bigmul(ll x, ll y, ll M) {
 }
 
 
-// All modular inverses from 1 to inv.size()-1
+// all modular inverses from 1 to inv.size()-1
 void modular_inverse(vector<ll> &inv)
 {
     inv[1] = 1;
-    for(ll i = 2; i < inv.size(); i++)
+    repx(i, 2, inv.size())
         inv[i] = MOD - (MOD/i) * inv[MOD%i] % MOD;
 }
 
