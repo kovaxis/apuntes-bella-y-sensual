@@ -48,6 +48,15 @@ ll bigmul(ll x, ll y, ll M) {
     return z;
 }
 
+
+// All modular inverses from 1 to inv.size()-1
+void modular_inverse(vector<ll> &inv)
+{
+    inv[1] = 1;
+    for(ll i = 2; i < inv.size(); i++)
+        inv[i] = MOD - (MOD/i) * inv[MOD%i] % MOD;
+}
+
 struct Mod {
     int a;
     static const int M = 1e9 + 7;
