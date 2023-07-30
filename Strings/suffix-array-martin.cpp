@@ -44,24 +44,3 @@ vector<int> makelcp(const string &s, const vector<int> &p) {
     }
     return lcp;
 }
-
-#ifndef NOMAIN_SUFARR
-
-void test(const string &s) {
-    cout << "suffix array for string \"" << s << "\" (length " << s.size()
-         << "):" << endl;
-    vector<int> sa = suffixarray(s);
-    vector<int> lcp = makelcp(s, sa);
-    rep(i, sa.size()) {
-        int j = sa[i];
-        if (i > 0) cout << "    " << lcp[i - 1] << endl;
-        cout << "  \"" << s.substr(j) << "\"" << endl;
-    }
-}
-
-int main() {
-    test("hello");
-    test("abracadabra");
-}
-
-#endif
