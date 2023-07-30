@@ -1,7 +1,5 @@
-#include<bits/stdc++.h>
-using namespace std;
-#define rep(i, n) for (int i = 0; i < (int)n; i++)
-#define repx(i, a, b) for (int i = (int)a; i < (int)b; i++)
+
+#include "../common.h"
 
 vector<int> prefix_function(string s) {
     int n = s.size();
@@ -34,3 +32,7 @@ void compute_automaton(string s) {
         }
     }
 }
+
+// k = n - pi[n - 1]
+// if k divides n, then the string can be aprtitioned into blocks of length k
+// otherwise there is no effective compression and the answer is n.
