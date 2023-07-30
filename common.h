@@ -10,3 +10,6 @@ typedef long long ll;
 #define rep(i, n) repx(i, 0, n)
 #define invrepx(i, a, b) for (int i = b - 1; i >= a; i--)
 #define invrep(i, n) invrepx(i, 0, n)
+
+#define LOG2(X) ((unsigned) (8*sizeof (unsigned long long) - __builtin_clzll((X)) - 1))
+
