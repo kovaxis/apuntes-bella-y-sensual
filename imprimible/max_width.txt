@@ -1,4 +1,4 @@
-https://github.com/pin3da/notebook-generator
+https://github.com/Erfaniaa/codes2pdf
 ignores all non `.cpp` files
 files with `_` in their names dont work well
 for 2 columns, the maximum width with notebook-generator, is 75
