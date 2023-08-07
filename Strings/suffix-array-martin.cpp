@@ -44,3 +44,15 @@ vector<int> makelcp(const string &s, const vector<int> &p) {
     }
     return lcp;
 }
+
+// lexicographically compare the suffixes starting from `i` and `j`,
+// considering only up to `K` characters.
+// `r` is the inverse suffix array, mapping suffix offsets to indices.
+// requires an LCP sparse table.
+int lcp_cmp(vector<int> &r, Sparse<int> &lcp, int i, int j, int K) {
+    if (i == j) return 0;
+    int ii = r[i], jj = r[j];
+    int l = lcp.query(min(ii, jj), max(ii, jj));
+    if (l >= K) return 0;
+    return ii < jj ? -1 : 1;
+}
