@@ -10,4 +10,4 @@ then
 fi
 
 ulimit -s 1000000
-(exit $OK) && echo "running..." >&2 && ./tmp
+(exit $OK) && echo "running..." >&2 && valgrind -q ./tmp
