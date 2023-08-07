@@ -14,7 +14,7 @@ vector<P> minkowski(vector<P> ps, vector<P> qs) {
     vector<P> result; int i = 0, j = 0;
     while (i < ps.size() - 2 || j < qs.size() - 2) {
         result.push_back(ps[i] + qs[j]);
-        auto z = (ps[i + 1] - ps[i]) / (qs[j + 1] - qs[j]);
+        auto z = (ps[i + 1] - ps[i]) % (qs[j + 1] - qs[j]);
         if (z >= 0 && i < ps.size() - 2) ++i;
         if (z <= 0 && j < qs.size() - 2) ++j;
     }

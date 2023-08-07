@@ -17,7 +17,7 @@ struct P {
 
     P rot() const { return {-y, x}; }
     T operator*(P r) const { return x * r.x + y * r.y; }
-    T operator/(P r) const { return rot() * r; }
+    T operator%(P r) const { return rot() * r; }
 
     T magsq() const { return x * x + y * y; }
     T mag() const { return sqrt(magsq()); }
@@ -26,7 +26,7 @@ struct P {
     bool half() const { return abs(y) <= EPS && x < -EPS || y < -EPS; }
     T angcmp(P r) const {
         int h = (int)half() - r.half();
-        return h ? h : r / *this;
+        return h ? h : r % *this;
     }
 
     bool operator==(P r) const { return abs(x - r.x) <= EPS && abs(y - r.y) <= EPS; }

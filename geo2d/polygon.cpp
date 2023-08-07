@@ -2,7 +2,7 @@
 T area(const vector<P> &ps) {
     int N = ps.size();
     T a = 0;
-    rep(i, N) a += (ps[i] - ps[0]) / (ps[(i + 1) % N] - ps[i]);
+    rep(i, N) a += (ps[i] - ps[0]) % (ps[(i + 1) % N] - ps[i]);
     return a / 2;
 }
 
@@ -19,7 +19,7 @@ int in_poly(const vector<P> &ps, P p) {
         } else {
             bool b = s.y < 0;
             if (b != (e.y < 0)) {
-                T z = s / e; if (z == 0) return 0;
+                T z = s % e; if (z == 0) return 0;
                 if (b == (z > 0)) w += b ? 1 : -1;
             }
         }
@@ -57,10 +57,10 @@ struct InConvex {
         if (p.x == ps[m].x) return p.y < rl || p.y > rh;
         int r = upper_bound(ps.begin(), ps.begin() + m, p,
             [](P a, P b) { return a.x < b.x; }) - ps.begin();
-        T z = (ps[r - 1] - ps[r]) / (p - ps[r]); if (z >= 0) return !!z;
+        T z = (ps[r - 1] - ps[r]) % (p - ps[r]); if (z >= 0) return !!z;
         r = upper_bound(ps.begin() + m, ps.end(), p,
             [](P a, P b) { return a.x > b.x; }) - ps.begin();
-        z = (ps[r - 1] - ps[r % N]) / (p - ps[r % N]);
+        z = (ps[r - 1] - ps[r % N]) % (p - ps[r % N]);
         if (z >= 0) return !!z; return -1;
     }
 };

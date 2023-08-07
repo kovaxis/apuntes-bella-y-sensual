@@ -8,7 +8,7 @@ struct Q {
     Q *next() { return r()->prev(); }
 };
 
-T cross(P a, P b, P c) { return (b - a) / (c - a); }
+T cross(P a, P b, P c) { return (b - a) % (c - a); }
 
 bool circ(P p, P a, P b, P c) { // is p in the circumcircle?
     lll p2 = p.magsq(), A = a.magsq() - p2,

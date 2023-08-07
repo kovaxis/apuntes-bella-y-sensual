@@ -7,13 +7,13 @@ vector<P> convex_hull(vector<P> &ps) {
     rep(i, N) if (make_pair(ps[i].y, ps[i].x) < make_pair(ps[k].y, ps[k].x)) k = i;
     swap(ps[k], ps[0]);
     sort(++ps.begin(), ps.end(), [&](P l, P r) {
-        T x = (r - l) / (ps[0] - l), d = (r - l) * (ps[0] - l);
+        T x = (r - l) % (ps[0] - l), d = (r - l) * (ps[0] - l);
         return x > 0 || x == 0 && d < 0;
     });
 
     vector<P> H;
     for (P p : ps) {
-        while (n >= 2 && (H[n - 1] - p) / (H[n - 2] - p) >= 0) H.pop_back(), n--;
+        while (n >= 2 && (H[n - 1] - p) % (H[n - 2] - p) >= 0) H.pop_back(), n--;
         H.push_back(p), n++;
     }
     return H;
