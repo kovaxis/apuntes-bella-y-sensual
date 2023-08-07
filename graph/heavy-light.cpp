@@ -25,6 +25,7 @@ struct Hld {
         return w;
     }
 
+    // visit the log N segments in the path from u to v
     template <class OP>
     void path(int u, int v, OP op) {
         while (top[u] != top[v]) {
@@ -36,18 +37,42 @@ struct Hld {
         // op(pos[u]+1, pos[v] + 1); // value on path
     }
 
-    // segment tree
-    template <class T, class S>
-    void update(S &seg, int i, T val) {
-        seg.update(pos[i], val);
+    // an alternative to `path` that considers order.
+    // calls `op` with an `l <= r` inclusive-exclusive range, and a
+    // boolean indicating if the query is forwards or backwards.
+    template <class OP>
+    void path(int u, int v, OP op) {
+        int lu = u, lv = v;
+        while (top[lu] != top[lv])
+            if (D[top[lu]] > D[top[lv]]) lu = P[top[lu]];
+            else lv = P[top[lv]];
+        int lca = D[lu] > D[lv] ? lv : lu;
+
+        while (top[u] != top[lca])
+            op(pos[top[u]], pos[u] + 1, false), u = P[top[u]];
+        if (u != lca) op(pos[lca] + 1, pos[u] + 1, false);
+
+        vector<int> stk;
+        while (top[v] != top[lca])
+            stk.push_back(v), v = P[top[v]];
+
+        // op(pos[lca], pos[v] + 1, true);  // value on vertex
+        op(pos[lca] + 1, pos[v] + 1, true); // value on edge
+        reverse(stk.begin(), stk.end());
+        for (int w : stk) op(pos[top[w]], pos[w] + 1, true);
     }
 
-    // segment tree lazy
+    // commutative segment tree
+    template <class T, class S>
+    void update(S &seg, int i, T val) { seg.update(pos[i], val); }
+
+    // commutative segment tree lazy
     template <class T, class S>
     void update(S &seg, int u, int v, T val) {
         path(u, v, [&](int l, int r) { seg.update(l, r, val); });
     }
 
+    // commutative (lazy) segment tree
     template <class T, class S>
     T query(S &seg, int u, int v) {
         T ans = 0;                                                 // neutral element
