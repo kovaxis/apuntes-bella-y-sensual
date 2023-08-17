@@ -42,6 +42,7 @@ void divisors(ll x, OP op) {
         for (i = 0; i < f.size(); i++) {
             f[i] += 1;
             if (f[i] <= facts[i].second) break;
+            f[i] = 0;
         }
         if (i == f.size()) break;
     }
