@@ -1,4 +1,9 @@
 https://github.com/Erfaniaa/codes2pdf
 ignores all non `.cpp` files
 files with `_` in their names dont work well
+command to run:
+```sh
+codes2pdf . -i "Pontificia Universidad Católica de Chile - Laranjas.clear()" -o imprimible/notebook.pdf
+```
+
 for 2 columns, the maximum width with notebook-generator, is 75
