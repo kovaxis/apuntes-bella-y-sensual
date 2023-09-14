@@ -64,3 +64,13 @@ struct InConvex {
         if (z >= 0) return !!z; return -1;
     }
 };
+
+// classify collision of a ray inside a ccw polygon vertex.
+// ray is (o, d), vertex is b, previous vertex is a, next is c.
+pair<bool, bool> inner_collide(P o, P d, P a, P b, P c) {
+    T p = (a - o) % d;       // side of previous
+    T n = (c - o) % d;       // side of next
+    T v = (c - b) % (b - a); // is vertex convex?
+    return {v > 0 ? n < 0 || (n == 0 && p < 0) : p > 0 || n < 0,
+            v > 0 ? p > 0 || (p == 0 && n > 0) : p > 0 || n < 0};
+}
