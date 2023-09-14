@@ -1,7 +1,8 @@
 https://github.com/Erfaniaa/codes2pdf
 ignores all non `.cpp` files
 files with `_` in their names dont work well
-command to run:
+
+to generate pdf, run this command from the repo root:
 ```sh
 codes2pdf . -i "Pontificia Universidad Católica de Chile - Laranjas.clear()" -o imprimible/notebook.pdf
 ```
