@@ -33,8 +33,8 @@ struct Hld {
             op(pos[top[v]], pos[v] + 1); v = P[top[v]];
         }
         if (D[u] > D[v]) swap(u, v);
-        op(pos[u], pos[v] + 1); // value on vertex
-        // op(pos[u]+1, pos[v] + 1); // value on path
+        op(pos[u], pos[v] + 1); // value on node
+        // op(pos[u]+1, pos[v] + 1); // value on edge
     }
 
     // an alternative to `path` that considers order.
@@ -56,7 +56,7 @@ struct Hld {
         while (top[v] != top[lca])
             stk.push_back(v), v = P[top[v]];
 
-        // op(pos[lca], pos[v] + 1, true);  // value on vertex
+        // op(pos[lca], pos[v] + 1, true);  // value on node
         op(pos[lca] + 1, pos[v] + 1, true); // value on edge
         reverse(stk.begin(), stk.end());
         for (int w : stk) op(pos[top[w]], pos[w] + 1, true);
