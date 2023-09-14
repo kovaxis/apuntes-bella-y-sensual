@@ -49,12 +49,12 @@ struct L {
             P s = o * d < r.o * d ? r.o : o;
             P e = (o + d) * d < (r.o + r.d) * d ? o + d : r.o + r.d;
             if (s * d > e * d) return false;
-            return *out = L(s, e - s), true;
+            return *out = {s, e - s}, true;
         }
         T s = inter(r), t = -r.inter(*this);
         if (z < 0) s = -s, t = -t, z = -z;
         if (s >= -EPS && s <= z + EPS && t >= -EPS && t <= z + EPS)
-            return *out = L(o + d * s / z, P()), true;
+            return *out = {o + d * s / z, {0, 0}}, true;
         return false;
     }
 
