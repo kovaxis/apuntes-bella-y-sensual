@@ -17,6 +17,7 @@ struct St {
     }
 
     void update(int i, ll x) {
-        for (a[i += n] = x; i /= 2;) a[i] = merge(a[2 * i], a[2 * i + 1]);
+        for (a[i += n] = x; i /= 2;)
+            a[i] = merge(a[2 * i], a[2 * i + 1]);
     }
 };
