@@ -1,42 +1,22 @@
-// usage:
-// St<Node<ll>> st;
-// st = {N};
-// st.update(index, new_value);
-// Node<ll> result = st.query(left, right);
-
-template <class T>
-struct Node {
-    T x;
-    Node() : x(0) {}
-    Node(T x) : x(x) {}
-    Node(Node a, Node b) : x(a.x + b.x) {}
-};
-
-template <class U>
 struct St {
-    vector<U> a;
+    int n;
+    vector<ll> a;
 
-    St() {}
-    St(int N) : a(4 * N, U()) {} // node neutral
+    ll neut() { return 0; }
+    ll merge(ll x, ll y) { return x + y; }
 
-    // query for range [l, r)
-    U query(int l, int r, int v = 1, int vl = 0, int vr = -1) {
-        if (vr == -1) vr = a.size() / 4;
-        if (l <= vl && r >= vr) return a[v]; // item construction
-        int vm = (vl + vr) / 2;
-        if (l >= vr || r <= vl) return U();                                   // item neutral
-        return U(query(l, r, 2 * v, vl, vm), query(l, r, 2 * v + 1, vm, vr)); // item merge
+    St(int n = 0) : n(n), a(2 * n, neut()) {}
+
+    ll query(int l, int r) {
+        ll x = neut(), y = neut();
+        for (l += n, r += n; l < r; l /= 2, r /= 2) {
+            if (l & 1) x = merge(x, a[l++]);
+            if (r & 1) y = merge(a[--r], y);
+        }
+        return merge(x, y);
     }
 
-    // set element i to val
-    void update(int i, U val, int v = 1, int vl = 0, int vr = -1) {
-        if (vr == -1) vr = a.size() / 4;
-        if (vr - vl == 1) a[v] = val; // item update
-        else {
-            int vm = (vl + vr) / 2;
-            if (i < vm) update(i, val, 2 * v, vl, vm);
-            else update(i, val, 2 * v + 1, vm, vr);
-            a[v] = U(a[2 * v], a[2 * v + 1]); // node merge
-        }
+    void update(int i, ll x) {
+        for (a[i += n] = x; i /= 2;) a[i] = merge(a[2 * i], a[2 * i + 1]);
     }
 };
