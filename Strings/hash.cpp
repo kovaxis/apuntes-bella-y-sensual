@@ -28,8 +28,8 @@ struct Hash {
     }
 };
 
-// compute hashes in multiple prime modulos simultaneously, to reduce the chance
-// of collisions.
+// compute hashes in multiple prime modulos simultaneously,
+// to reduce the chance of collisions.
 struct HashM {
     int N;
     vector<Hash> sub;

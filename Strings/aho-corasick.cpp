@@ -1,6 +1,3 @@
-
-#include "../common.h"
-
 const int K = 26;
 struct Vertex {
     int next[K];
@@ -12,7 +9,6 @@ struct Vertex {
     int exit = -1;
     int cnt = -1;
     int go[K];
-
     Vertex(int p=-1, char ch='$') : p(p), pch(ch) {
         fill(begin(next), end(next), -1);
         fill(begin(go), end(go), -1);
@@ -58,20 +54,18 @@ int go(int v, char ch) {
     return t[v].go[c];
 } 
 
-int next_match(int v)
-{
+int next_match(int v){
     if(t[v].exit == -1)
     {
         if(t[get_link(v)].leaf)
             t[v].exit = get_link(v);
         else
-            t[v].exit = v == 0 ? 0 : next_match(get_link(v));
+            t[v].exit = v==0 ? 0 : next_match(get_link(v));
     }
     return t[v].exit;
 }
 
-int cnt_matches(int v)
-{
+int cnt_matches(int v){
     if(t[v].cnt == -1)
         t[v].cnt = v == 0 ? 0 : t[v].leaf + cnt_matches(get_link(v));
     return t[v].cnt;

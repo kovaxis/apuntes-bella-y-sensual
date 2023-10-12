@@ -1,16 +1,20 @@
-
-#include "../common.h"
-
 struct SuffixAutomaton {
-    vector<map<char,int>> edges; // edges[i]  : the labeled edges from node i
-    vector<int> link;            // link[i]   : the suffix link of i
-    vector<int> length;          // length[i] : the length of the longest string in the ith class
-    vector<int> cnt;             // cnt[i]    : number of occurrences of each string in the ith class
-    vector<int> paths;           // paths[i]  : number of paths on the automaton starting from i
-    vector<bool> terminal;       // terminal[i] : true if i is a terminal state
+    // edges[i]: the labeled edges from node i
+    vector<map<char,int>> edges;
+    // link[i]: the suffix link of i
+    vector<int> link;
+    // length[i]: len of the longest string in the ith class
+    vector<int> length;
+    // cnt[i]: # occurrences of each string in the ith class 
+    vector<int> cnt;
+    // paths[i]: # of paths on the automaton starting from i
+    vector<int> paths;           
+    // terminal[i]: true if i is a terminal state
+    vector<bool> terminal;       
     vector<int> first_pos;           
     vector<int> last_pos;      
-    int last;                    // the index of the equivalence class of the whole string
+    //the index of the equivalence class of the whole string
+    int last;
  
     SuffixAutomaton(string s) {
         edges.push_back(map<char,int>());
@@ -23,7 +27,8 @@ struct SuffixAutomaton {
             length.push_back(i+1);
             link.push_back(0);
             int r = edges.size() - 1;
-            int p = last; // add edges to r and find p with link to q
+            int p = last;
+            // add edges to r and find p with link to q
             while(p >= 0 && !edges[p].count(s[i])) {
                 edges[p][s[i]] = r;
                 p = link[p];
@@ -31,15 +36,20 @@ struct SuffixAutomaton {
             if(p != -1) {
                 int q = edges[p][s[i]];
                 if(length[p] + 1 == length[q]) {
-                    link[r] = q; // we do not have to split q, just set the correct suffix link
+//we don't have to split q, just set the correct suffix link
+                    link[r] = q; 
                 } else { // we have to split, add q'
-                    edges.push_back(edges[q]); // copy edges of q
+                    // copy edges of q
+                    edges.push_back(edges[q]); 
                     length.push_back(length[p] + 1);
-                    link.push_back(link[q]); // copy parent of q
+                    // copy parent of q
+                    link.push_back(link[q]); 
                     int qq = edges.size()-1;
-                    link[q] = qq; // add qq as the new parent of q and r
+                    // add qq as the new parent of q and r
+                    link[q] = qq; 
                     link[r] = qq;
-                    while(p >= 0 && edges[p][s[i]] == q) { // move short classes polling to q to poll to q'
+            // move short classes polling to q to poll to q'
+                    while(p >= 0 && edges[p][s[i]] == q) { 
                         edges[p][s[i]] = qq;
                         p = link[p];
                     }
@@ -47,9 +57,7 @@ struct SuffixAutomaton {
             }
             last = r;
         }
-
     /* ------ Optional ------ */
- 
         // mark terminal nodes
         terminal.assign(edges.size(), false);
         int p = last;
@@ -57,12 +65,10 @@ struct SuffixAutomaton {
             terminal[p] = true;
             p = link[p];
         }
-
         // precompute match count
         cnt.assign(edges.size(), -1);
         cnt_matches(0);
- 
-        // precompute number of paths (substrings) starting from state
+        //precompute # of paths (substr) starting from state
         paths.assign(edges.size(), -1);
         cnt_paths(0);
 
@@ -83,8 +89,10 @@ struct SuffixAutomaton {
  
     int cnt_paths(int state) {
         if(paths[state] != -1) return paths[state];
-        int ans = state == 0 ? 0 : 1;   // without repetition (counts diferent substrings)
-    //  int ans = state == 0 ? 0 : cnt[state]; // with repetition
+        // without repetition (counts diferent substrings)
+        int ans = state == 0 ? 0 : 1;   
+        // with repetition
+    //  int ans = state == 0 ? 0 : cnt[state]; 
         for(auto edge : edges[state])
             ans += cnt_paths(edge.second);
         return paths[state] = ans;
@@ -106,17 +114,16 @@ struct SuffixAutomaton {
         return last_pos[state] = ans;
     }
  
-    string get_k_substring(int k)  // 0-indexed
-    {
+    string get_k_substring(int k) { // 0-indexed
         string ans;
         int state = 0;
-        while(true)
-        {
-            int curr = state == 0 ? 0 : 1;   // without repetition (counts diferent substrings)
-        //  int curr = state == 0 ? 0 : cnt[state]; // with repetition
+        while(true){
+            // without repetition (counts diferent substrs)
+            int curr = state == 0 ? 0 : 1;   
+            // with repetition
+        //  int curr = state == 0 ? 0 : cnt[state]; 
             if(curr > k) return ans;
             k -= curr;
- 
             for(auto edge : edges[state]) {
                 if(paths[edge.second] <= k) {
                     k -= paths[edge.second];

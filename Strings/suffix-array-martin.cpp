@@ -1,7 +1,8 @@
 // build the suffix array
-// suffixes are sorted, with each suffix represented by its starting position
+// suffixes are sorted, with each suffix represented by its 
+// starting position
 vector<int> suffixarray(const string &s) {
-    int N = s.size() + 1; // optional: include terminating NUL
+    int N = s.size() + 1;//optional: include terminating NUL
     vector<int> p(N), p2(N), c(N), c2(N), cnt(256);
     rep(i, N) cnt[s[i]] += 1;
     repx(b, 1, 256) cnt[b] += cnt[b - 1];
@@ -23,20 +24,16 @@ vector<int> suffixarray(const string &s) {
     p.erase(p.begin()); // optional: erase terminating NUL
     return p;
 }
-
 // build the lcp
-// `lcp[i]` represents the length of the longest common prefix between suffix i
-// and suffix i+1 in the suffix array `p`. the last element of `lcp` is zero by
-// convention
+// `lcp[i]` represents the length of the longest common
+// prefix between suffix i and suffix i+1 in the suffix
+//array `p`. the last element of `lcp` is zero by convention
 vector<int> makelcp(const string &s, const vector<int> &p) {
     int N = p.size(), k = 0;
     vector<int> r(N), lcp(N);
     rep(i, N) r[p[i]] = i;
     rep(i, N) {
-        if (r[i] + 1 >= N) {
-            k = 0;
-            continue;
-        }
+        if (r[i] + 1 >= N) { k = 0; continue; }
         int j = p[r[i] + 1];
         while (i + k < N && j + k < N && s[i + k] == s[j + k]) k += 1;
         lcp[r[i]] = k;
@@ -44,11 +41,10 @@ vector<int> makelcp(const string &s, const vector<int> &p) {
     }
     return lcp;
 }
-
-// lexicographically compare the suffixes starting from `i` and `j`,
-// considering only up to `K` characters.
-// `r` is the inverse suffix array, mapping suffix offsets to indices.
-// requires an LCP sparse table.
+// lexicographically compare the suffixes starting from `i`
+// and `j`, considering only up to `K` characters.
+// `r` is the inverse suffix array, mapping suffix offsets 
+// to indices. requires an LCP sparse table.
 int lcp_cmp(vector<int> &r, Sparse<int> &lcp, int i, int j, int K) {
     if (i == j) return 0;
     int ii = r[i], jj = r[j];
