@@ -4,11 +4,9 @@ struct Line {
     bool operator<(Line r) const { return a < r.a; }
     bool operator<(ll x) const { return c < x; }
 };
-
-// dynamically insert `a*x + b` lines and query for maximum at any x
-// all operations have complexity O(log N)
+// dynamically insert `a*x + b` lines and query for maximum
+// at any x all operations have complexity O(log N)
 struct LineContainer : multiset<Line, less<>> {
-
     ll div(ll a, ll b) {
         return a / b - ((a ^ b) < 0 && a % b);
     }

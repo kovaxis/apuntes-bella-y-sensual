@@ -17,3 +17,6 @@ __builtin_clz(x)
 __builtin_ctz(x)
 // 5. Returns 1 + the index of the least significant 1-bit.
 __builtin_ffs(x) // If x == 0, returns 0.
+// Iterate over non empty subsets of bitmask
+for(int s=m;s;s=(s-1)&m) // Decreasing order
+for (int s=0;s=s-m&m;) // Increasing order

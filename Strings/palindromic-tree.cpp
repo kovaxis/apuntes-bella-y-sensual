@@ -49,7 +49,7 @@ struct EerTree {    // Palindromic Tree
         }
     }
 };
-int main(){
+void main(){
 	string s = "abcbab";
     EerTree pt(s);          // construct palindromic tree
 	repx(i, 2, pt.t.size()) // list all distinct palindromes
@@ -59,5 +59,4 @@ int main(){
 			cout << s[j];
 		cout << " " << pt.t[i].cnt << endl;
 	}
-	return 0;
 }

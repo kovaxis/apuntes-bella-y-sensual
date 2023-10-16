@@ -33,7 +33,6 @@ struct Dinic {
     ll maxflow() {
         ll f = 0;
         while (true) {
-            // bfs to build levels
             lvl.assign(N, -1); queue<int> q; lvl[s] = 0, q.push(s);
             while (!q.empty()) {
                 int u = q.front(); q.pop();
@@ -45,7 +44,6 @@ struct Dinic {
             }
             if (lvl[t] == -1) break;
 
-            // dfs to find blocking flow
             ptr.assign(N, 0); while (ll ff = push(s, INF)) f += ff;
         }
         return f;

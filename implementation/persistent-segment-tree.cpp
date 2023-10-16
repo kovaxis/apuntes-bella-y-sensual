@@ -21,30 +21,32 @@ struct Pst {
     vector<int> head;
 
     int build(int vl, int vr) {
-        if (vr - vl == 1) a.push_back(U()); // node construction
+        if (vr - vl == 1) a.push_back(U());
         else {
-            int vm = (vl + vr) / 2, l = build(vl, vm), r = build(vm, vr);
-            a.push_back(U(a[l], a[r], l, r)); // query merge
+            int vm = (vl + vr) / 2, l = build(vl, vm),
+                r = build(vm, vr);
+            a.push_back(U(a[l], a[r], l, r));
         }
         return a.size() - 1;
     }
 
     U query(int l, int r, int v, int vl, int vr) {
-        if (l >= vr || r <= vl) return U(); // query neutral
+        if (l >= vr || r <= vl) return U();
         if (l <= vl && r >= vr) return a[v];
         int vm = (vl + vr) / 2;
-        return U(query(l, r, a[v].l, vl, vm), query(l, r, a[v].r, vm, vr)); // query merge
+        return U(query(l, r, a[v].l, vl, vm),
+                 query(l, r, a[v].r, vm, vr));
     }
 
     int update(int i, U x, int v, int vl, int vr) {
         a.push_back(a[v]);
         v = a.size() - 1;
-        if (vr - vl == 1) a[v] = x; // update op
+        if (vr - vl == 1) a[v] = x;
         else {
             int vm = (vl + vr) / 2;
             if (i < vm) a[v].l = update(i, x, a[v].l, vl, vm);
             else a[v].r = update(i, x, a[v].r, vm, vr);
-            a[v] = U(a[a[v].l], a[a[v].r], a[v].l, a[v].r); // query merge
+            a[v] = U(a[a[v].l], a[a[v].r], a[v].l, a[v].r);
         }
         return v;
     }

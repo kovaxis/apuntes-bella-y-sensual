@@ -1,24 +1,17 @@
 struct Dsu {
-    vector<int> p, r;
-
-    // initialize the disjoint-set-union to all unitary sets
-    void reset(int N) {
-        p.resize(N), r.assign(N, 0);
-        rep(i, N) p[i] = i;
+    vector<int> p; Dsu() {} Dsu(int N) : p(N, -1) {}
+    int get(int x) { return p[x] < 0 ? x : get(p[x]); }
+    bool sameSet(int a, int b) { return get(a) == get(b); }
+    int size(int x) { return -p[get(x)]; }
+    vector<vector<int>> S;
+    void unite(int x, int y) {
+        if ((x = get(x)) == (y = get(y))) { S.push_back({-1}); return; }
+        if (p[x] > p[y]) swap(x, y);
+        S.push_back({x, y, p[x], p[y]});
+        p[x] += p[y], p[y] = x;
     }
-
-    // find the leader node corresponding to node `i`
-    int find(int i) {
-        if (p[i] != i) p[i] = find(p[i]);
-        return p[i];
-    }
-
-    // perform union on the two sets that `i` and `j` belong to
-    void unite(int i, int j) {
-        i = find(i), j = find(j);
-        if (i == j) return;
-        if (r[i] > r[j]) swap(i, j);
-        if (r[i] == r[j]) r[j] += 1;
-        p[i] = j;
+    void rollback() {
+        auto a = S.back(); S.pop_back();
+        if (a[0] != -1) p[a[0]] = a[2], p[a[1]] = a[3];
     }
 };

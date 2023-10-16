@@ -66,10 +66,4 @@ ll phi(ll x) {
     return phi;
 }
 
-// computes primality up to N.
-// considers 0 and 1 prime.
-// O(N log N)
-void sieve(int N, vector<bool> &prime) {
-    prime.assign(N + 1, true);
-    repx(n, 2, N + 1) if (prime[n]) for (int k = 2 * n; k <= N; k += n) prime[k] = false;
-}
+// isprime is in mod.cpp

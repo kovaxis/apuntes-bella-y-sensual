@@ -1,5 +1,3 @@
-#include "../Template.cpp"
-
 mt19937 gen(chrono::high_resolution_clock::now().time_since_epoch().count());
 
 //  101 Implicit Treap  //
