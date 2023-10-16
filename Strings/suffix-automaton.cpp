@@ -32,7 +32,7 @@ struct SuffixAutomaton {
             }
             last = r;
         } /* ------ Optional ------ */
-        terminal.assign(len.size());
+        terminal.assign(len.size(), 0);
         for(int p = last; p > 0; p = link[p]) terminal[p]=1;
         cnt.assign(len.size(), -1); cnt_matches(0);
         //precompute # of paths (substr) starting from state
@@ -48,7 +48,7 @@ struct SuffixAutomaton {
     }
     int cnt_paths(int state) {
         if(paths[state] != -1) return paths[state];
-        int ans = state == 0;         // without repetitions
+        int ans = state != 0;         // without repetitions
     //  int ans = state == 0 ? 0 : cnt[state];  // with rep.
         for(auto edge : edges[state])
             ans += cnt_paths(edge.second);
@@ -65,7 +65,7 @@ struct SuffixAutomaton {
     string get_k_substring(int k) { // 0-indexed
         string ans; int state = 0;
         while(1){
-            int curr = state == 0;     // without repetition 
+            int curr = state != 0;     // without repetition 
         //  int curr = state == 0 ? 0 : cnt[state]; // with
             if(curr > k) return ans;
             k -= curr;
