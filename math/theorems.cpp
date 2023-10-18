@@ -1,30 +1,19 @@
 Burnside lemma
-For a set X, with members x in X, and a group G, with
-operations g in G, where g(x): X -> X.
-F_g is the set of x which are fixed points of g (ie.
-{ x in X / g(x) = x }).
-The number of orbits (connected components in the
-graph formed by assigning each x a node and
-a directed edge between x and g(x) for every g) is
-called M.
-M = the average of the fixed points of all
-g = (|F_g1| + |F_g2| + ... + |F_gn|) / |G|
-If x are images and g are simmetries, then M
-corresponds to the amount of objects, |G|
-corresponds to the amount of simmetries, and F_g
-corresponds to the amount of simmetrical images under
-the simmetry g.
+Tomemos imagenes x en X y operaciones (g: X -> X) en G.
+Si #g es la cantidad de imagenes que son puntos fijos de g,
+entonces la cantidad de objetos es `(sum_{g in G} #g) / |G|`
+Es requisito que G tenga la operacion identidad, que toda
+operacion tenga inversa y que todo par de operaciones tenga
+su combinacion.
 
 Rational root theorem
-All rational roots of the polynomials with integer coefficients:
-a0 * x^0 + a1 * x^1 + a2 * x^2 + ... + an * x^n = 0
-If these roots are represented as p / q, with p and q coprime,
-- p is an integer factor of a0
-- q is an integer factor of an
-Note that if a0 = 0, then x = 0 is a root, the polynomial can be divided by x and the theorem
-applies once again.
+Las raices racionales de un polinomio de orden n con
+coeficientes enteros A[i] son de la forma p / q, donde p y q
+son coprimos, p es divisor de A[0] y q es divisor de A[n].
+Notar que si A[0] = 0, cero es raiz, se puede dividir el
+polinomio por x y aplica nuevamente el teorema.
 
-Petersen's theorem
+Petersens theorem
 Every cubic and bridgeless graph has a perfect matching.
 
 Number of divisors for powers of 10
