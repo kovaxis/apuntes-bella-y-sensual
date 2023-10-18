@@ -1,10 +1,17 @@
-https://github.com/Erfaniaa/codes2pdf
-ignores all non `.cpp` files
-files with `_` in their names dont work well
+# Compiling the notebook
 
-to generate pdf, run this command from the repo root:
+Install this tool:
+
+https://github.com/Erfaniaa/codes2pdf
+
+The run this command from the repo root:
+
 ```sh
 codes2pdf . -i "Pontificia Universidad Católica de Chile - Laranjas.clear()" -o imprimible/notebook.pdf
 ```
 
-for 2 columns, the maximum width with notebook-generator, is 75
+# Notes
+
+- `codes2pdf` ignores all files that do not have the extension `.cpp`.
+- Files with `_` in their names don't work well.
+- For 3 columns, the maximum line width with `codes2pdf` is 60 characters.
