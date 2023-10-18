@@ -53,4 +53,4 @@ Agregar s' y t' nuevos source and sink
 c'(s', v) = sum(d(u, v) for u in V) \forall arista (s', v)
 c'(v, t') = sum(d(v, w) for w in V) \forall arista (v, t')
 c'(u, v) = c(u, v) - d(u, v) \forall aristas antiguas
-c'(t, s) = INF */
+c'(t, s) = INF (el flujo por esta arista es el flujo real)*/
