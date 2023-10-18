@@ -1,40 +1,27 @@
-using T = ll;
-struct Mat {
-    int N, M;
-    vector<vector<T>> v;
+typedef vector<vector<double>> Mat;
+Mat matmul(Mat l, Mat r) {
+    int n = l.N, m = r.M, p = l.M; assert(l.M == r.N);
+    Mat a(n, vector<double>(m));  // neutral
+    rep(i, n) rep(j, m)
+        rep(k, p) a[i][j] = a[i][j] + l[i][k] * r[k][j];
+    return a;
+}
 
-    Mat(int n, int m) : N(n), M(m), v(N, vector<T>(M)) {}
-    Mat(int n) : Mat(n, n) { rep(i, N) v[i][i] = 1; }
-
-    vector<T> &operator[](int i) { return v[i]; }
-
-    Mat operator*(Mat &r) {
-        assert(M == r.N);
-        int n = N, m = r.M, p = M;
-        Mat a(n, m);
-        rep(i, n) rep(j, m) {
-            a[i][j] = T();                                   // neutral
-            rep(k, p) a[i][j] = a[i][j] + v[i][k] * r[k][j]; // mul, add
+double reduce(vector<vector<double>> &A) {
+    int n = A.size(), m = A[0].size();
+    int i = 0, j = 0; double r = 1.;
+    while (i < n && j < m) {
+        int l = i;
+        repx(k, i+1, n) if(abs(A[k][j]) > abs(A[l][j])) l=k;
+        if (abs(A[l][j]) < EPS) { j++; r = 0.; continue; }
+        if (l != i) { r = -r; swap(A[i], A[l]); }
+        r *= A[i][j];
+        for (int k = m - 1; k >= j; k--) A[i][k] /= A[i][j];
+        repx(k, 0, n) {
+            if (k == i) continue;
+            for(int l=m-1;l>=j;l--)A[k][l]-=A[k][j]*A[i][l];
         }
-        return a;
+        i++, j++;
     }
-
-    Mat binexp(ll e) {
-        assert(N == M);
-        Mat a = *this, res(N); // neutral
-        while (e) {
-            if (e & 1) res = res * a; // mul
-            a = a * a;                // mul
-            e >>= 1;
-        }
-        return res;
-    }
-
-    friend ostream &operator<<(ostream &s, Mat &a) {
-        rep(i, a.N) {
-            rep(j, a.M) s << a[i][j] << " ";
-            s << endl;
-        }
-        return s;
-    }
-};
+    return r; // returns determinant
+}
