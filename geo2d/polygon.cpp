@@ -1,13 +1,12 @@
 // get the area of a simple polygon in ccw order
 T area(const vector<P> &ps) {
-    int N = ps.size();
-    T a = 0;
+    int N = ps.size(); T a = 0;
     rep(i, N) a += (ps[i] - ps[0]) % (ps[(i + 1) % N] - ps[i]);
     return a / 2;
 }
 
 // checks whether a point is inside a simple polygon
-// returns -1 if inside, 0 if on border, 1 if outside
+// returns 1 if inside, 0 if on border, -1 if outside
 // O(N)
 int in_poly(const vector<P> &ps, P p) {
     int N = ps.size(), w = 0;
@@ -24,46 +23,21 @@ int in_poly(const vector<P> &ps, P p) {
             }
         }
     }
-    return w ? -1 : 1;
+    return w ? 1 : -1;
 }
 
-// check if a point is in a convex polygon
-struct InConvex {
-    vector<P> ps;
-    T ll, lh, rl, rh;
-    int N, m;
-
-    // preprocess polygon
-    // O(N)
-    InConvex(const vector<P> &p) : ps(p), N(ps.size()), m(0) {
-        assert(N >= 2);
-        rep(i, N) if (ps[i].x < ps[m].x) m = i;
-        rotate(ps.begin(), ps.begin() + m, ps.end());
-        rep(i, N) if (ps[i].x > ps[m].x) m = i;
-        ll = lh = ps[0].y, rl = rh = ps[m].y;
-        for (P p : ps) {
-            if (p.x == ps[0].x) ll = min(ll, p.y), lh = max(lh, p.y);
-            if (p.x == ps[m].x) rl = min(rl, p.y), rh = max(rh, p.y);
-        }
+// check if point in ccw convex polygon, O(log n)
+// + if inside, 0 if on border, - if outside
+T in_convex(const vector<P> &p, P q) {
+    int l = 1, h = p.size() - 2; assert(p.size() >= 3);
+    while (l != h) { // collinear points are unsupported!
+        int m = (l + h + 1) / 2;
+        if (q.left(p[0], p[m]) >= 0) l = m;
+        else h = m - 1;
     }
-    InConvex() {}
-
-    // check if point belongs in polygon
-    // returns -1 if inside, 0 if on border, 1 if outside
-    // O(log N)
-    int in_poly(P p) {
-        if (p.x < ps[0].x || p.x > ps[m].x) return 1;
-        if (p.x == ps[0].x) return p.y < ll || p.y > lh;
-        if (p.x == ps[m].x) return p.y < rl || p.y > rh;
-        int r = upper_bound(ps.begin(), ps.begin() + m, p,
-            [](P a, P b) { return a.x < b.x; }) - ps.begin();
-        T z = (ps[r - 1] - ps[r]) % (p - ps[r]); if (z >= 0) return !!z;
-        r = upper_bound(ps.begin() + m, ps.end(), p,
-            [](P a, P b) { return a.x > b.x; }) - ps.begin();
-        z = (ps[r - 1] - ps[r % N]) % (p - ps[r % N]);
-        if (z >= 0) return !!z; return -1;
-    }
-};
+    T in = min(q.left(p[0], p[1]), q.left(p.back(), p[0]));
+    return min(in, q.left(p[l], p[l + 1]));
+}
 
 // classify collision of a ray inside a ccw polygon vertex.
 // ray is (o, d), vertex is b, previous vertex is a, next is c.

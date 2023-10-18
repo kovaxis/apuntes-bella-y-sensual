@@ -18,6 +18,7 @@ struct P {
     P rot() const { return {-y, x}; }
     T operator*(P r) const { return x * r.x + y * r.y; }
     T operator%(P r) const { return rot() * r; }
+    T left(P a, P b) { return (b - a) % (*this - a); }
 
     T magsq() const { return x * x + y * y; }
     T mag() const { return sqrt(magsq()); }
