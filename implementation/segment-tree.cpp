@@ -1,10 +1,8 @@
 struct St {
-    int n;
-    vector<ll> a;
-
     ll neut() { return 0; }
     ll merge(ll x, ll y) { return x + y; }
 
+    int n; vector<ll> a;
     St(int n = 0) : n(n), a(2 * n, neut()) {}
 
     ll query(int l, int r) {
