@@ -25,9 +25,15 @@ struct P {
     P unit() const { return *this / mag(); }
 
     bool half() const { return abs(y) <= EPS && x < -EPS || y < -EPS; }
-    T angcmp(P r) const {
+    T angcmp(P r) const { // like strcmp(this, r)
         int h = (int)half() - r.half();
         return h ? h : r % *this;
+    }
+    T angcmp_rel(P a, P b) { // like strcmp(a, b)
+        P z = *this;
+        int h = z % a <= 0 && z * a < 0 || z % a < 0;
+        h -= z % b <= 0 && z * b < 0 || z % b < 0;
+        return h ? h : b % a;
     }
 
     bool operator==(P r) const { return abs(x - r.x) <= EPS && abs(y - r.y) <= EPS; }

@@ -39,6 +39,18 @@ T in_convex(const vector<P> &p, P q) {
     return min(in, q.left(p[l], p[l + 1]));
 }
 
+int extremal(const vector<P> &p, P d) {
+    int n = p.size(), l = 0, r = n - 1; assert(n);
+    P e0 = (p[n - 1] - p[0]).rot();
+    while (l < r) {  // polygon must be convex
+        int m = (l + r + 1) / 2;
+        P e = (p[(m + n - 1) % n] - p[m]).rot();
+        if (e0.angcmp_rel(d, e) < 0) r = m - 1;
+        else l = m;
+    }
+    return l;
+}
+
 // classify collision of a ray inside a ccw polygon vertex.
 // ray is (o, d), vertex is b, previous vertex is a, next is c.
 pair<bool, bool> inner_collide(P o, P d, P a, P b, P c) {
