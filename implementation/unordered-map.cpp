@@ -3,8 +3,8 @@ static mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 struct Hash {
     size_t operator()(const ll &x) const {
-        static const uint64_t RAND = chrono::steady_clock
-            ::now().time_since_epoch().count();
+        const uint64_t RAND = chrono::steady_clock::now()
+            .time_since_epoch().count();
         uint64_t z = x + RAND + 0x9e3779b97f4a7c15;
         z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;
         z = (z ^ (z >> 27)) * 0x94d049bb133111eb;
