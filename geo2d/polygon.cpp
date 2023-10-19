@@ -45,6 +45,20 @@ int extremal(const vector<P> &p, P d) {
     return l;
 }
 
+// square dist of most distant points of a ccw convex
+// polygon with NO COLLINEAR POINTS
+T callipers(const vector<P> &p) {
+    int n = p.size();
+    T r = 0;
+    for (int i = 0, j = n < 2 ? 0 : 1; i < j; i++) {
+        for (;; j = (j + 1) % n) {
+            r = max(r, (p[i] - p[j]).magsq());
+            if ((p[(i + 1) % n] - p[i]) % (p[(j + 1) % n] - p[j]) <= EPS) break;
+        }
+    }
+    return r;
+}
+
 // classify collision of a ray inside a ccw polygon vertex.
 // ray is (o, d), vertex is b, previous vertex is a, next is c.
 pair<bool, bool> inner_collide(P o, P d, P a, P b, P c) {
