@@ -59,6 +59,15 @@ T callipers(const vector<P> &p) {
     return r;
 }
 
+P centroid(const vector<P> &p) { // (barycenter)
+    P r(0, 0); T t = 0; int n = p.size();
+    rep(i, n) {
+        r += (p[i] + p[(i+1)%n]) * (p[i] % p[(i+1)%n]);
+        t += p[i] % p[(i+1)%n];
+    }
+    return r / t / 3;
+}
+
 // classify collision of a ray inside a ccw polygon vertex.
 // ray is (o, d), vertex is b, previous vertex is a, next is c.
 pair<bool, bool> inner_collide(P o, P d, P a, P b, P c) {
