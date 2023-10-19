@@ -6,5 +6,8 @@
     ],
     "files.associations": {
         "theorems.cpp": "plaintext"
-    }
+    },
+    "C_Cpp.default.forcedInclude": [
+        "/common.cpp",
+    ]
 }
