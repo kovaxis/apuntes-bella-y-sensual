@@ -8,6 +8,6 @@
         "theorems.cpp": "plaintext"
     },
     "C_Cpp.default.forcedInclude": [
-        "/common.cpp",
+        "/forced_include_for_linter.h",
     ]
 }
