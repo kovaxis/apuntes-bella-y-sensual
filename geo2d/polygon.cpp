@@ -1,27 +1,21 @@
-// get the area of a simple polygon in ccw order
-T area(const vector<P> &ps) {
-    int N = ps.size(); T a = 0;
-    rep(i, N) a += (ps[i] - ps[0]) % (ps[(i + 1) % N] - ps[i]);
-    return a / 2;
+// get TWICE the area of a simple polygon in ccw order
+T area2(const vector<P> &p) {
+    int n = p.size(); T a = 0;
+    rep(i, n) a += (p[i] - p[0]) % (p[(i + 1) % n] - p[i]);
+    return a;
 }
 
-// checks whether a point is inside a simple polygon
+// checks whether a point is inside a ccw simple polygon
 // returns 1 if inside, 0 if on border, -1 if outside
-// O(N)
-int in_poly(const vector<P> &ps, P p) {
-    int N = ps.size(), w = 0;
-    rep(i, N) {
-        P s = ps[i] - p, e = ps[(i + 1) % N] - p;
-        if (s == P()) return 0;
-        if (s.y == 0 && e.y == 0) {
-            if (min(s.x, e.x) <= 0 && 0 <= max(s.x, e.x)) return 0;
-        } else {
-            bool b = s.y < 0;
-            if (b != (e.y < 0)) {
-                T z = s % e; if (z == 0) return 0;
-                if (b == (z > 0)) w += b ? 1 : -1;
-            }
-        }
+int in_poly(const vector<P> &p, P q) {
+    int w = 0;
+    rep(i, p.size()) {
+        P a = p[i], b = p[(i + 1) % p.size()];
+        T k = (b - a) % (q - a);
+        T u = a.y - q.y, v = b.y - q.y;
+        if (k > 0 && u < 0 && v >= 0) w++;
+        if (k < 0 && v < 0 && u >= 0) w--;
+        if (k == 0 && (q - a) * (q - b) <= 0) return 0;
     }
     return w ? 1 : -1;
 }
