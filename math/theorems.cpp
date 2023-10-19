@@ -39,3 +39,13 @@ que hay n^{n-2} spanning trees en un grafo completo.
 Corolario: Si tenemos k componentes de tamaños s1,s2,...,sk
 entonces podemos hacerlos conexos agregando k-1 aristas
 entre nodos de s1*s2*...*sk*n^{k-2} formas
+
+Combinatoria
+Catalan: C_{n+1} = sum(C_i*C_{n-i} for i \in [0, n])
+Catalan: C_n = \frac{1}{n+1}*\binom{2n, n}
+Sea C_n^k las formas de poner n+k pares de paréntesis, con
+los primeros k paréntesis abiertos (esto es, hay 2n + 2k
+carácteres), se tiene que
+C_n^k = (2n+k-1)*(2n+k)/(n*(n+k+1)) * C_{n-1}^k
+Sea D_n el número de permutaciones sin puntos fijos, entoces
+D_n = (n-1)*(D_{n-1} + D_{n-2}), D_0 = 1, D_1 = 0
