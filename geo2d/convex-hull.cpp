@@ -1,20 +1,20 @@
-// get the convex hull with the least amount of vertices for the given set
-// of points
-// probably misbehaves if points are not all distinct!
-vector<P> convex_hull(vector<P> &ps) {
-    int N = ps.size(), n = 0, k = 0;
-    if (N <= 2) return ps;
-    rep(i, N) if (make_pair(ps[i].y, ps[i].x) < make_pair(ps[k].y, ps[k].x)) k = i;
-    swap(ps[k], ps[0]);
-    sort(++ps.begin(), ps.end(), [&](P l, P r) {
-        T x = (r - l) % (ps[0] - l), d = (r - l) * (ps[0] - l);
-        return x > 0 || x == 0 && d < 0;
-    });
-
-    vector<P> H;
-    for (P p : ps) {
-        while (n >= 2 && (H[n - 1] - p) % (H[n - 2] - p) >= 0) H.pop_back(), n--;
-        H.push_back(p), n++;
+// ccw order, excludes collinear points by default
+// adding collinears duplicates points
+vector<P> chull(vector<P> p) {
+    if (p.size() < 3) return p;
+    vector<P> r; int k = 0;
+    sort(p.begin(), p.end(), [](P a, P b) {
+        return a.x != b.x ? a.x < b.x : a.y < b.y; });
+    for (P q : p) { // lower hull
+        while (k >= 2 && r[k - 1].left(r[k - 2], q) >= 0)
+            r.pop_back(), k--; // >= to > to add collinears
+        r.push_back(q), k++;
     }
-    return H;
+    r.pop_back(), k--; int m = k;
+    for (int i = p.size() - 1; i >= 0; --i) { // upper hull
+        while (k >= m+2 && r[k-1].left(r[k-2], p[i]) >= 0)
+            r.pop_back(), k--; // >= to > to add collinears
+        r.push_back(p[i]), k++;
+    }
+    r.pop_back(); return r;
 }
