@@ -1,5 +1,5 @@
+const int K = 2;
 struct Hash{
-    const int K = 2;
     const ll MOD[K] = {999727999, 1070777777};
     const ll P = 1777771;
     vector<ll> h[K], p[K];

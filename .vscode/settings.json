@@ -3,5 +3,11 @@
     "editor.wordWrapColumn": 60,
     "editor.rulers": [
         60
+    ],
+    "files.associations": {
+        "theorems.cpp": "plaintext"
+    },
+    "C_Cpp.default.forcedInclude": [
+        "/forced_include_for_linter.h",
     ]
 }
