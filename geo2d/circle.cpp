@@ -1,22 +1,16 @@
 struct C {
     P o; T r;
 
-    C(P o, T r) : o(o), r(r) {}
-    C() : C(P(), T()) {}
-
-    // intersects the circle with a line, assuming they intersect
-    // results are sorted with respect to the direction of the line
+    // circle-line intersection, assuming it exists
+    // points are sorted along the direction of the line
     pair<P, P> line_inter(L l) const {
-        P c = l.closest_to(o);
-        T c2 = (c - o).magsq();
-        P e = sqrt(max(r * r - c2, T())) * l.d.unit();
+        P c = l.closest_to(o); T c2 = (c - o).magsq();
+        P e = l.d * sqrt(max(r*r - c2, T()) / l.d.magsq());
         return {c - e, c + e};
     }
 
-    // checks whether the given line collides with the circle
-    // negative: 2 intersections
-    // zero: 1 intersection
-    // positive: 0 intersections
+    // check the type of line-circle collision
+    // <0: 2 inters, =0: 1 inter, >0: 0 inters
     T line_collide(L l) const {
         T c2 = (l.closest_to(o) - o).magsq();
         return c2 - r * r;
@@ -35,13 +29,13 @@ struct C {
         return (h.o - o).magsq() <= (h.r + r) * (h.r + r);
     }
 
-    // get one of the two tangents that cross through the point
+    // get one of the two tangents that go through the point
     // the point must not be inside the circle
     // a = -1: cw (relative to the circle) tangent
     // a =  1: ccw (relative to the circle) tangent
     P point_tangent(P p, T a) const {
         T c = r * r / p.magsq();
-        return o + c * (p - o) - a * sqrt(c * (1 - c)) * (p - o).rot();
+        return o + c*(p-o) - a*sqrt(c*(1-c))*(p-o).rot();
     }
 
     // get one of the 4 tangents between the two circles
@@ -49,24 +43,24 @@ struct C {
     // a = -1: interior tangents (requires no area overlap)
     // b =  1: ccw tangent
     // b = -1: cw tangent
-    // the line origin is on this circumference, and the direction
-    // is a unit vector towards the other circle
+    // the line origin is on this circumference, and the
+    // direction is a unit vector towards the other circle
     L tangent(C c, T a, T b) const {
         T dr = a * r - c.r;
         P d = c.o - o;
-        P n = (d * dr + b * d.rot() * sqrt(d.magsq() - dr * dr)).unit();
+        P n = (d*dr+b*d.rot()*sqrt(d.magsq()-dr*dr)).unit();
         return {o + n * r, -b * n.rot()};
     }
 
-    // find the circumcircle of the given **non-degenerate** triangle
+    // circumcircle of a **non-degenerate** triangle
     static C thru_points(P a, P b, P c) {
-        L l((a + b) / 2, (b - a).rot());
-        P p = l.intersection(L((a + c) / 2, (c - a).rot()));
-        return {p, (p - a).mag()};
+        b = b - a, c = c - a;
+        P p = (b*c.magsq() - c*b.magsq()).rot() / (b%c*2);
+        return {a + p, p.mag()};
     }
 
-    // find the two circles that go through the given point, are tangent
-    // to the given line and have radius `r`
+    // find the two circles that go through the given point,
+    // are tangent to the given line and have radius `r`
     // the point-line distance must be at most `r`!
     // the circles are sorted in the direction of the line
     static pair<C, C> thru_point_line_r(P a, L t, T r) {
@@ -76,12 +70,12 @@ struct C {
         return {{p.first, r}, {p.second, r}};
     }
 
-    // find the two circles that go through the given points and have
-    // radius `r`
-    // the circles are sorted by angle with respect to the first point
+    // find the two circles that go through the given points
+    // and have radius `r`
+    // circles sorted by angle from the first point
     // the points must be at most at distance `r`!
     static pair<C, C> thru_points_r(P a, P b, T r) {
-        auto p = C(a, r).line_inter({(a + b) / 2, (b - a).rot()});
+        auto p = C(a, r).line_inter({(a+b)/2, (b-a).rot()});
         return {{p.first, r}, {p.second, r}};
     }
 };
