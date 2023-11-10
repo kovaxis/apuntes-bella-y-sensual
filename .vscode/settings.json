@@ -3,8 +3,5 @@
     "editor.wordWrapColumn": 60,
     "editor.rulers": [
         60
-    ],
-    "files.associations": {
-        "theorems.cpp": "plaintext"
-    }
+    ]
 }
