@@ -6,8 +6,7 @@ struct Node {    // (*) = Optional
     int cnt;     // (*) # of occurrences of this substring
     Node(int len, int link=0, int i=0, int cnt=1): len(len),
     link(link), i(i), cnt(cnt) {memset(to, 0, sizeof(to));}
-};
-struct EerTree {    // Palindromic Tree
+}; struct EerTree {    // Palindromic Tree
     vector<Node> t; // tree (max size of tree is n+2)
     int last;       // current node
     EerTree(string &s) : last(0) {
@@ -16,8 +15,8 @@ struct EerTree {    // Palindromic Tree
         for(int i = t.size()-1; i > 1; i--) 
             t[t[i].link].cnt += t[i].cnt;
     }
-    void add(int i, string &s){
-        int p=last, c=s[i]-'a';
+    void add(int i, string &s){         // vangrind warning:
+        int p=last, c=s[i]-'a';         // i-t[p].len-1 = -1
         while(s[i-t[p].len-1] != s[i]) p = t[p].link;
         if(t[p].to[c]){ last = t[p].to[c]; t[last].cnt++; }
         else{
