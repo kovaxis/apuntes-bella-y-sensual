@@ -12,3 +12,9 @@ using namespace std;
 
 typedef long long ll;
 typedef pair<int,int> ii;
+
+
+// Segment Tree 2D
+#define MAXN 1024
+#define op(a,b) (a+b)
+#define NEUT 0
