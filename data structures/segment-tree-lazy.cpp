@@ -1,16 +1,14 @@
 template <class T>
 struct Stl {
-    int n;
-    vector<T> a, b;
+    int n; vector<T> a, b;
+    Stl(int n = 0) : n(n), a(4 * n, qneut()),
+        b(4 * n, uneut()) {}
 
     T qneut() { return -2e9; }
     T uneut() { return 0; }
     T merge(T x, T y) { return max(x, y); }
     void upd(int v, T x, int l, int r)
         { a[v] += x, b[v] += x; }
-
-    Stl(int n = 0) : n(n), a(4 * n, qneut()),
-        b(4 * n, uneut()) {}
 
     void push(int v, int vl, int vm, int vr) {
         upd(2 * v, b[v], vl, vm);

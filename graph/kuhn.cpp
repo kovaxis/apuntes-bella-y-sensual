@@ -3,8 +3,8 @@
 // output: matching (in `mt` member).
 // runtime: O(V E)
 struct Kuhn {
-    int N, size;
     vector<vector<int>> G;
+    int N, size;
     vector<bool> seen;
     vector<int> mt;
 
