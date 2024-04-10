@@ -7,7 +7,6 @@ ll count_divisors(ll x) {
     }
     return divs;
 }
-
 // gets the prime factorization of a number in O(sqrt(n))
 vector<pair<ll, int>> factorize(ll x) {
     vector<pair<ll, int>> f;
@@ -19,7 +18,6 @@ vector<pair<ll, int>> factorize(ll x) {
     }
     return f;
 }
-
 // iterate over all divisors of a number.
 // divisor count upper bound: n^(1.07 / ln ln n)
 template <class OP>
@@ -40,7 +38,6 @@ void divisors(ll x, OP op) {
         if (i == f.size()) break;
     }
 }
-
 // computes euler totative function phi(x), counting the
 // amount of integers in [1, x] that are coprime with x.
 // time: O(sqrt(x))
@@ -53,4 +50,17 @@ ll phi(ll x) {
         phi *= k1 - k0;
     }
     return phi;
+}
+// test-prime.cpp
+// change to __int128 if checking numbers over 10^9
+bool isprime(ll n) {
+    if (n < 2 || n % 6 % 4 != 1) return n - 2 < 2;
+    ll A[] = {2,325,9375,28178,450775,9780504,1795265022};
+    ll s = __builtin_ctzll(n - 1), d = n >> s;
+    for (int a : A) {
+        ll p = binexp(a, d, n), i = s;
+        while (p != 1 && p != n - 1 && a % n && i--) p = p * p % n;
+        if (p != n - 1 && i != s) return 0;
+    }
+    return 1;
 }
