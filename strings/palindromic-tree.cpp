@@ -1,8 +1,8 @@
 struct Node {    // (*) = Optional
-	int len;     // length of substring
-	int to[26];  // insertion edge for all characters a-z
-	int link;    // maximun palindromic suffix
-	int i;       // (*) start index of current Node
+    int len;     // length of substring
+    int to[26];  // insertion edge for all characters a-z
+    int link;    // maximun palindromic suffix
+    int i;       // (*) start index of current Node
     int cnt;     // (*) # of occurrences of this substring
     Node(int len, int link=0, int i=0, int cnt=1): len(len),
     link(link), i(i), cnt(cnt) {memset(to, 0, sizeof(to));}
@@ -29,9 +29,9 @@ struct Node {    // (*) = Optional
     }
 };
 void main(){
-	string s = "abcbab"; EerTree pt(s); // build EerTree
-	repx(i, 2, pt.t.size()){// list all distinct palindromes
-		repx(j,pt.t[i].i,pt.t[i].i+pt.t[i].len)cout << s[j];
-		cout << " " << pt.t[i].cnt << endl;
-	}
+    string s = "abcbab"; EerTree pt(s); // build EerTree
+    repx(i, 2, pt.t.size()){// list all distinct palindromes
+        repx(j,pt.t[i].i,pt.t[i].i+pt.t[i].len)cout << s[j];
+        cout << " " << pt.t[i].cnt << endl;
+    }
 }
