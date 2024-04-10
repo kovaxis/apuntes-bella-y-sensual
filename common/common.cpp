@@ -8,3 +8,12 @@ typedef long long ll;
 #define rep(i, n) repx(i, 0, n)
 #define invrepx(i, a, b) for (int i = b - 1; i >= a; i--)
 #define invrep(i, n) invrepx(i, 0, n)
+// Command to check time and memory usage:
+//      /usr/bin/time -v ./tmp
+// See "Maximum resident set size" for max memory used
+// Commands for interactive checker:
+//      mkfifo fifo
+//      (./solution < fifo) | (./interactor > fifo)
+// Does not work on the Windows file system, i.e., /mnt/c/
+// The special fifo file must be used, otherwise the
+// solution will not wait for input and will read EOF
