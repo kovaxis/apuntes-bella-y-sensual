@@ -1,3 +1,6 @@
+
+// DEPRECATED
+
 using Hash = pair<ll, int>;
 
 struct Block {
