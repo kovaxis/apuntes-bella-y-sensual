@@ -9,7 +9,12 @@ using namespace std;
 #define rep(i, n) repx(i, 0, n)
 #define invrepx(i, a, b) for (int i = b - 1; i >= a; i--)
 #define invrep(i, n) invrepx(i, 0, n)
-
+#define eb emplace_back
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define SZ(x) ((int)x.size())
 typedef long long ll;
 typedef pair<int,int> ii;
 
