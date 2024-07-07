@@ -7,7 +7,7 @@ https://github.com/Erfaniaa/codes2pdf
 The run this command from the repo root:
 
 ```sh
-codes2pdf . -a "Pontificia Universidad Católica de Chile - Laranjas.clear()" -i "Pontificia Universidad Católica de Chile - Laranjas.clear()" -o notebook.pdf
+codes2pdf . -a "Pontificia Universidad Católica de Chile - Bella y Sensual" -i "Pontificia Universidad Católica de Chile - Bella y Sensual" -o notebook.pdf
 ```
 
 # Notes
