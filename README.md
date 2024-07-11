@@ -11,3 +11,21 @@ Esto significa que:
 Usando papel A4 (mas area que Carta), con Courier New 6pt (legible a 50cm) y 0.25in de margen, nos caben 103 lineas de 155 caracteres cada una por plana (se permite una plana por pagina).
 
 Esto es, aprox 200 lineas de 75 caracteres por pagina. Con 25 paginas (no se incluye portada, porque va en la carpeta), son 5000 lineas de hasta 75 caracteres.
+
+# Compiling the notebook
+
+Install this tool:
+
+https://github.com/Erfaniaa/codes2pdf
+
+The run this command from the repo root:
+
+```sh
+codes2pdf . -a "Pontificia Universidad Católica de Chile - Bella y Sensual" -i "Pontificia Universidad Católica de Chile - Bella y Sensual" -o notebook.pdf
+```
+
+# Notes
+
+- `codes2pdf` ignores all files that do not have the extension `.cpp`.
+- Files with `_` in their names don't work well.
+- For 3 columns, the maximum line width with `codes2pdf` is 60 characters.
