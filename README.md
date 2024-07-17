@@ -14,18 +14,12 @@ Esto es, aprox 200 lineas de 75 caracteres por pagina. Con 25 paginas (no se inc
 
 # Compiling the notebook
 
-Install this tool:
-
-https://github.com/Erfaniaa/codes2pdf
-
-The run this command from the repo root:
+Simply run `make.py`:
 
 ```sh
-codes2pdf . -a "Pontificia Universidad Católica de Chile - Bella y Sensual" -i "Pontificia Universidad Católica de Chile - Bella y Sensual" -o notebook.pdf
+python3 make.py
 ```
 
 # Notes
 
-- `codes2pdf` ignores all files that do not have the extension `.cpp`.
-- Files with `_` in their names don't work well.
-- For 3 columns, the maximum line width with `codes2pdf` is 60 characters.
+- Font size is calibrated to fit 60 characters per line just right.
