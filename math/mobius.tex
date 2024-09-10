@@ -1,0 +1,49 @@
+\section{Mobius Function}
+[
+    \mu(n) = \begin{cases} 0 & n \textrm{ is not square free}\ 1 & n \textrm{ has even number of prime factors}\ -1 & n \textrm{ has odd number of prime factors}\\end{cases}
+]
+  Mobius Inversion:
+  [ g(n) = \sum{d|n} f(d) \Leftrightarrow f(n) = \sum{d|n} \mu(d)g(n/d) ]
+  Other useful formulas/forms:
+
+  $ \sum{d | n} \mu(d) = [ n = 1] $ (very useful)
+
+  $ g(n) = \sum{n|d} f(d) \Leftrightarrow f(n) = \sum{n|d} \mu(d/n)g(d)$
+
+ $ g(n) = \sum{1 \leq m \leq n} f(\left\lfloor\frac{n}{m}\right \rfloor ) \Leftrightarrow f(n) = \sum_{1\leq m\leq n} \mu(m)g(\left\lfloor\frac{n}{m}\right\rfloor)$
+
+
+\subsection{Partition function}
+ Number of ways of writing $n$ as a sum of positive integers, disregarding the order of the summands.
+ \[ p(0) = 1,\ p(n) = \sum_{k \in \mathbb Z \setminus \{0\}}{(-1)^{k+1} p(n - k(3k-1) / 2)} \]
+ \[ p(n) \sim 0.145 / n \cdot \exp(2.56 \sqrt{n}) \]
+
+ \begin{center}
+ \begin{tabular}{c|c@{\ }c@{\ }c@{\ }c@{\ }c@{\ }c@{\ }c@{\ }c@{\ }c@{\ }c@{\ }c@{\ }c@{\ }c}
+     $n$    & 0 & 1 & 2 & 3 & 4 & 5 & 6  & 7  & 8  & 9  & 20  & 50  & 100 \\ \hline
+     $p(n)$ & 1 & 1 & 2 & 3 & 5 & 7 & 11 & 15 & 22 & 30 & 627 & $\mathtt{\sim}$2e5 & $\mathtt{\sim}$2e8 \\
+ \end{tabular}
+ \end{center}
+
+\subsection{Bell numbers}
+ Total number of partitions of $n$ distinct elements. $B(n) =$
+ $1, 1, 2, 5, 15, 52, 203, 877, 4140, 21147, \dots$. For $p$ prime,
+ \[ B(p^m+n)\equiv mB(n)+B(n+1) \pmod{p} \]
+
+\subsection{Labeled unrooted trees}
+ \# on $n$ vertices: $n^{n-2}$ \\
+ \# on $k$ existing trees of size $n_i$: $n_1n_2\cdots n_k n^{k-2}$ \\
+ \# with degrees $d_i$: $(n-2)! / ((d_1-1)! \cdots (d_n-1)!)$
+
+\subsection{Catalan numbers}
+ \[ C_n=\frac{1}{n+1}\binom{2n}{n}= \binom{2n}{n}-\binom{2n}{n+1} = \frac{(2n)!}{(n+1)!n!} \]
+ \[ C_0=1,\ C_{n+1} = \frac{2(2n+1)}{n+2}C_n,\ C_{n+1}=\sum C_iC_{n-i} \]
+ ${C_n = 1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862, 16796, 58786, \dots}$
+ \begin{itemize}[noitemsep]
+     \item sub-diagonal monotone paths in an $n\times n$ grid.
+     \item strings with $n$ pairs of parenthesis, correctly nested.
+     \item binary trees with with $n+1$ leaves (0 or 2 children).
+     \item ordered trees with $n+1$ vertices.
+     \item ways a convex polygon with $n+2$ sides can be cut into triangles by connecting vertices with straight lines.
+     \item permutations of $[n]$ with no 3-term increasing subseq.
+ \end{itemize}
