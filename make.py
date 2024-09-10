@@ -9,6 +9,7 @@ import subprocess
 import sys
 import time
 import re
+from typing import Any
 
 EXT_WHITELIST = [".cpp", ".c", ".typ", ".txt"]
 PLATFORM_TYPST = {
@@ -38,99 +39,47 @@ def file_name(name: str) -> str | None:
 def file_contents(filename: str, raw: str) -> str:
     if filename.endswith(".typ"):
         # Treat as typst source
-        return "#[\n" + raw.strip() + "\n]"
+        return Verbatim("[\n" + raw.strip() + "\n]")
 
     # Treat as code
     extension = ""
     if "." in filename:
         extension = filename.split(".")[-1]
-    return "```"+extension+"\n"+raw.strip()+"\n```"
+    return Verbatim("```"+extension+"\n"+raw.strip()+"\n```")
+    return Verbatim("["+"\n".join("#box(```"+extension+"\n"+line+"\n```)" for line in raw.strip().split("}\n"))+"]")
 
-def compose_file(name: str, file: str) -> str:
-    return f"""
-== {name}
+class Verbatim(str):
+    pass
 
-{file}
-    """
-
-def compose_section(name: str, section: list[tuple[str, str]]) -> str:
-    return f"""
-= {name}
-
-{NEWLINE.join(compose_file(filename, file) for filename, file in section)}
-    """
+def serialize(val: Any) -> str:
+    if isinstance(val, Verbatim):
+        return val
+    if isinstance(val, bool):
+        return "true" if val else "false"
+    if isinstance(val, float) or isinstance(val, int):
+        return str(val)
+    if isinstance(val, str):
+        return '"' + val.replace("\\", "\\\\").replace("\"", "\\\"") + '"'
+    if isinstance(val, list) or isinstance(val, tuple):
+        return "(" + "".join(serialize(subval) + "," for subval in val) + ")"
+    if not isinstance(val, dict):
+        val = {attrname: getattr(val, attrname) for attrname in dir(val) if not attrname.startswith("_")}
+    if not val:
+        return "(:)"
+    for k in val:
+        if not isinstance(k, str):
+            raise RuntimeError("dictionary key must be a string")
+    return "("+",".join(serialize(k) + ":" + serialize(v) for k, v in val.items())+")"
 
 def compose(sections: list[tuple[str, list[tuple[str, str]]]]) -> str:
-    template = """
-// Document config
-
-#set page(flipped: true, margin: margin, paper: paper)
-#set text(font: "New Computer Modern")
-#show raw: set text(font: "DejaVu Sans Mono", weight: 500, size: font_size)
-#set raw(theme: "themes/"+theme+".tmTheme") if theme != ""
-
-// Title
-
-#align(center, {
-  text(size: 10mm)[Team Notebook]
-  v(-3mm)
-  text(size: 6mm, uni + " - " + team)
-})
-
-// Index
-
-#place(columns(cols, gutter: gutter, {
-  for i in range(cols - 1) {
-    colbreak()
-    align(left+top, move(line(angle: 90deg, length: 164mm), dx: -gutter/2))
-  }
-}))
-#columns(cols, gutter: gutter, {
-  show outline.entry.where(level: 1): set text(weight: "bold")
-  outline(title: none, indent: 5mm)
-})
-
-// Body setup
-
-#pagebreak(weak: true)
-
-#set page(header: {
-  align(left, move(uni + " - " + team, dy: 100%))
-  align(right, move(counter(page).display()))
-})
-#set page(background: pad(margin, {
-  columns(cols, gutter: gutter, {
-    for i in range(cols - 1) {
-      colbreak()
-      align(left+top, move(line(angle: 90deg, length: 100%), dx: -gutter/2))
+    args = {
+        "conf": conf,
+        "content": sections,
     }
-  })
-}))
-#show: columns.with(3, gutter: gutter)
-
-#set heading(numbering: "1.1")
-#show heading.where(level: 2): it => {
-  it
-  v(-3mm)
-  move(line(length: 100% + gutter), dx: -gutter/2)
-}
-
-// Body contents
+    return f"""
+#import "template.typ": compose
+#compose({serialize(args)})
     """
-
-    vars = {
-        "font_size": conf.font_size,
-        "uni": '"' + conf.university + '"',
-        "team": '"' + conf.team + '"',
-        "cols": conf.column_count,
-        "gutter": conf.column_gutter,
-        "margin": conf.margin,
-        "paper": '"' + conf.paper + '"',
-        "theme": '"' + conf.theme + '"',
-    }
-    var_defs = "\n".join(f"#let {key} = {val}" for key, val in vars.items())
-    content = "\n".join(compose_section(name, section) for name, section in sections)
-    return var_defs + template + content
 
 def ingest() -> list[tuple[str, list[tuple[str, str]]]]:
     sections = []
@@ -151,8 +100,8 @@ def ingest() -> list[tuple[str, list[tuple[str, str]]]]:
 
 def compile(src: str):
     if conf.print_source:
-        print("printing source code instead of compiling because --print-source flag was received")
-        print("typst source code:")
+        print("printing source code instead of compiling because --print-source flag was received", file=sys.stderr)
+        print("typst source code:", file=sys.stderr)
         print(src)
     else:
         system = platform.system()
@@ -161,24 +110,25 @@ def compile(src: str):
             raise RuntimeError(f"typst binary not available for platform '{system}'")
         typst_dir = base_path.joinpath(".typst")
         exe_path = typst_dir.joinpath(exe_name)
-        out_path = base_path.joinpath(conf.out_file)
+        out_path = base_path.joinpath(conf.out)
         subprocess.run([exe_path, "compile", "--root", typst_dir, "--format", "pdf", "-", out_path], input=src.encode("utf-8"))
-        print(f"wrote pdf to {conf.out_file}")
+        print(f"wrote pdf to {conf.out}", file=sys.stderr)
 
 
 @dataclass
 class Conf:
-    out_file: str
+    out: str
     university: str
     team: str
 
     print_source: bool
 
-    font_size: str
-    column_count: str
-    column_gutter: str
-    margin: str
+    font_size: Verbatim
+    column_count: int
+    column_gutter: Verbatim
+    margin: Verbatim
     paper: str
+    portrait: bool
     theme: str
 
     @staticmethod
@@ -194,13 +144,20 @@ class Conf:
         p.add_argument("--margin", default="10mm", help="Page margin")
         p.add_argument("--paper", default="a4", help="Page paper size")
         p.add_argument("--theme", default="", help="Code highlighting theme")
+        p.add_argument("--portrait", action="store_true", help="Whether to orient in portrait mode")
         args = sys.argv[1:]
         confpath = base_path.joinpath("makeconf")
         if confpath.is_file():
             extra = confpath.read_text().splitlines()
             args = extra + args
-        p = p.parse_args(args)
-        return Conf(print_source=p.print_source, out_file=p.out, university=p.university, team=p.team, font_size=p.font_size, column_count=p.column_count, column_gutter=p.column_gutter, margin=p.margin, paper=p.paper, theme=p.theme)
+        parsed = p.parse_args(args)
+        attrs = {}
+        for name, ty in Conf.__annotations__.items():
+            attrs[name] = ty(getattr(parsed, name))
+        for attrname in dir(parsed):
+            if not attrname.startswith("_") and attrname not in Conf.__annotations__:
+                raise NameError(f"unknown commandline attribute '{attrname}'")
+        return Conf(**attrs)
 
 def main():
     global conf
@@ -208,14 +165,14 @@ def main():
 
     conf = Conf.parse()
 
-    print("processing input files")
+    print("processing input files", file=sys.stderr)
     sections = ingest()
     src = compose(sections)
 
-    print("compiling to pdf")
+    print("compiling to pdf", file=sys.stderr)
     compile(src)
     
-    print(f"done in {time.monotonic() - start:.2f}s")
+    print(f"done in {time.monotonic() - start:.2f}s", file=sys.stderr)
 
 if __name__ == "__main__":
     main()

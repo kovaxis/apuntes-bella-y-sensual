@@ -1,4 +1,5 @@
-mt19937 gen(chrono::high_resolution_clock::now().time_since_epoch().count());
+mt19937 gen(chrono::high_resolution_clock::now()
+    .time_since_epoch().count());
 //  101 Implicit Treap  //
 struct Node {
     int p, sz = 0, v, acc, l = -1, r = -1;
