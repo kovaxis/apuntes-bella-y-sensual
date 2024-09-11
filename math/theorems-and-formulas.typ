@@ -36,7 +36,7 @@ ascents ($pi_i > pi_(i+1)$) / excedances ($pi > i$) / $k+1$ weak excedances ($pi
 
 $E_(n,k) = (k+1) E_(n-1,k) + (n-k)E_(n-1,k-1)$
 
-* Mobius Function*
+*Mobius Function*
 
 $ mu(n) = cases(
     0 & n "is not square free",
@@ -58,7 +58,7 @@ $g(n) = sum_(1 <= m <= n) f(floor(n/m)) <=> f(n) = sum_(1 <= m <= n) mu(m) g(flo
 
 $g(n) = sum_(n|d) f(d) <=> f(n) = sum_(n|d) mu(d/n) g(d)$
 
-* Partition function*
+*Partition function*
 
 Number of ways of writing $n$ as a sum of positive integers, disregarding the order of the summands.
 
@@ -70,7 +70,7 @@ $ p(n) approx 0.145 / n dot e^(2.56 sqrt(n)) $
     $p(n)$, $1$, $1$, $2$, $3$, $5$, $7$, $11$, $15$, $22$, $30$, $627$, $approx 2 e 5$, $approx 2 e 8$,
 )
 
-* Bell numbers*
+*Bell numbers*
 
 Total number of partitions of $n$ distinct elements. $B(n) =$
 $1, 1, 2, 5, 15, 52, 203, 877, 4140, 21147, dots$.
@@ -78,7 +78,7 @@ $1, 1, 2, 5, 15, 52, 203, 877, 4140, 21147, dots$.
 For $p$ prime,
 $ B(p^m+n) equiv m B(n)+B(n+1) quad (mod p) $
 
-* Labeled unrooted trees*
+*Labeled unrooted trees*
 
 \# on $n$ vertices: $n^(n-2)$
 
@@ -99,3 +99,7 @@ $ C_n = 1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862, 16796, 58786, dots $
 - ways a convex polygon with $n+2$ sides can be cut into triangles by connecting vertices with straight lines.
 - permutations of $[n]$ with no 3-term increasing subseq.
 ]
+
+*Narayana Numbers*
+
+$ N(n, k) = 1/n binom(n, k) binom(n, k - 1) $

@@ -1,4 +1,4 @@
-# Apuntes ICPC WF 2022 Egipto - Equipo Bella y Sensual
+# Apuntes ICPC WF 2024 Kazakhstan - Equipo Bella y Sensual
 
 ## Reglas para los apuntes
 
