@@ -1,4 +1,5 @@
-mt19937 rng(chrono::high_resolution_clock::now().time_since_epoch().count());
+mt19937 rng(chrono::high_resolution_clock::now()
+    .time_since_epoch().count());
 struct item { // to allow duplicates, add random val to keys
     int p, k, n; item *l=0, *r=0;
     item(int k) : p(rng()), k(k), n(1) {}
